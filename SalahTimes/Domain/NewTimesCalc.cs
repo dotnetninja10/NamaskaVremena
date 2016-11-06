@@ -2607,55 +2607,6 @@ namespace SalahTimes.Domain
             return times;
         }
 
-        public string ToString(TimeFormats timeFormat)
-        {
-            if(timeFormat==TimeFormats.Hfloat)
-            //        case TimeFormats.Hfloat:
-            //        formatted[0] = times.Imsak.ToString(CultureInfo.InvariantCulture);
-            //formatted[1] = times.Fajr.ToString(CultureInfo.InvariantCulture);
-            //formatted[2] = times.Sunrise.ToString(CultureInfo.InvariantCulture);
-            //formatted[3] = times.Dhuhr.ToString(CultureInfo.InvariantCulture);
-            //formatted[4] = times.Asr.ToString(CultureInfo.InvariantCulture);
-            //formatted[5] = times.Sunset.ToString(CultureInfo.InvariantCulture);
-            //formatted[6] = times.Maghrib.ToString(CultureInfo.InvariantCulture);
-            //formatted[7] = times.Isha.ToString(CultureInfo.InvariantCulture);
-            //formatted[8] = times.Midnight.ToString(CultureInfo.InvariantCulture);
-            //break;
-            //    case TimeFormats.Hour12:
-            //        formatted[0] = TimeUtilities.FloatToTime12(times.Imsak, true);
-            //formatted[1] = TimeUtilities.FloatToTime12(times.Fajr, true);
-            //formatted[2] = TimeUtilities.FloatToTime12(times.Sunrise, true);
-            //formatted[3] = TimeUtilities.FloatToTime12(times.Dhuhr, true);
-            //formatted[4] = TimeUtilities.FloatToTime12(times.Asr, true);
-            //formatted[5] = TimeUtilities.FloatToTime12(times.Sunset, true);
-            //formatted[6] = TimeUtilities.FloatToTime12(times.Maghrib, true);
-            //formatted[7] = TimeUtilities.FloatToTime12(times.Isha, true);
-            //formatted[8] = TimeUtilities.FloatToTime12(times.Midnight, true);
-            //break;
-            //    case TimeFormats.Hour12hNS:
-            //        formatted[0] = TimeUtilities.FloatToTime12NS(times.Imsak);
-            //formatted[1] = TimeUtilities.FloatToTime12NS(times.Fajr);
-            //formatted[2] = TimeUtilities.FloatToTime12NS(times.Sunrise);
-            //formatted[3] = TimeUtilities.FloatToTime12NS(times.Dhuhr);
-            //formatted[4] = TimeUtilities.FloatToTime12NS(times.Asr);
-            //formatted[5] = TimeUtilities.FloatToTime12NS(times.Sunset);
-            //formatted[6] = TimeUtilities.FloatToTime12NS(times.Maghrib);
-            //formatted[7] = TimeUtilities.FloatToTime12NS(times.Isha);
-            //formatted[8] = TimeUtilities.FloatToTime12NS(times.Midnight);
-            //break;
-            //    case TimeFormats.Hour24:
-            //        formatted[0] = TimeUtilities.FloatToTime24(times.Imsak);
-            //formatted[1] = TimeUtilities.FloatToTime24(times.Fajr);
-            //formatted[2] = TimeUtilities.FloatToTime24(times.Sunrise);
-            //formatted[3] = TimeUtilities.FloatToTime24(times.Dhuhr);
-            //formatted[4] = TimeUtilities.FloatToTime24(times.Asr);
-            //formatted[5] = TimeUtilities.FloatToTime24(times.Sunset);
-            //formatted[6] = TimeUtilities.FloatToTime24(times.Maghrib);
-            //formatted[7] = TimeUtilities.FloatToTime24(times.Isha);
-            //formatted[8] = TimeUtilities.FloatToTime24(times.Midnight);
-            //break;
-            //default:
-        }
     }
     public class PrayerTimeAdjustments
     {
@@ -2813,37 +2764,31 @@ namespace SalahTimes.Domain
         
         public NewTimesCalc(bool useMonsight)
         {
-            //offset = new int[9] {-10, 0, 0, 0, 0, 0, 0, 0, 0};
-            //_useMoonSight = useMonsight;
-            //this.selectedAsrMethod = (int) ASRMETHOD.Shafii;
-            //_setting = new DefaultSetting(10, 18, 0, 0, 17, ASRMETHOD.Shafii, HIGHLATMETHOD.OneSeventh,
-            //    MIDHIGHTMETHOD.Standard, 0, 0);
-            //this.CalculationParameters= CalculationParameters.SetCalculationMethod(CalculationMethods.MOON_SIGHTING_COMMITTEE);
-            //this.CalculationParameters= new CalculationParameters(18.0,17.0, new PrayerTimeAdjustments(10,0,0,0,0,0));
-            //setting = new DefaultSetting(10, 18, 0, 0, 17, ASRMETHOD.Shafii, HIGHLATMETHOD.NightMiddle, MIDHIGHTMETHOD.Standard, 0, 0);
-            //_setting = new DefaultSetting(10, 18, 5, 0, 17, ASRMETHOD.Shafii, HIGHLATMETHOD.OneSeventh, MIDHIGHTMETHOD.Standard, 3, 0);
         }
 
         #region Properties
-        private double JDate { get; set; }
-        private DateComponent _dateComponent;
-        private Coordinates _coordinates;
-        private CalculationParameters _calculationParameters;
+        private double JDate { get; }
+        private readonly DateComponent _dateComponent;
+        private readonly Coordinates _coordinates;
+        private readonly CalculationParameters _calculationParameters;
         private AstronomicalCalculations _astronomicalCalculationsInstance;
         
         private int numIterations=1;
-        #endregion
-        public string[] getTimes(DateComponent dateComponent, Coordinates coordinates, CalculationMethods calculationMethod)
+
+        public NewTimesCalc(DateComponent dateComponent, Coordinates coordinates, CalculationMethods calculationMethod)
         {
             this._dateComponent = dateComponent;
             this._coordinates = coordinates;
             this._calculationParameters = CalculationParameters.SetCalculationMethod(calculationMethod);
 
-            this.JDate = TimeUtilities.Julian(dateComponent.CalculationDate.Year, dateComponent.CalculationDate.Month, dateComponent.CalculationDate.Day) 
+            this.JDate = TimeUtilities.Julian(dateComponent.CalculationDate.Year, dateComponent.CalculationDate.Month, dateComponent.CalculationDate.Day)
                 - coordinates.Longtitud / (15 * 24);
-
             _astronomicalCalculationsInstance = new AstronomicalCalculations(calculationMethod);
 
+        }
+        #endregion
+        public string[] getTimes()
+        {
             return this.computeTimes1();
         }
 
@@ -2940,7 +2885,7 @@ namespace SalahTimes.Domain
                     formatted[8] = times.Midnight.ToString(CultureInfo.InvariantCulture);
                     break;
                 case TimeFormats.Hour12:
-                    formatted[0] = TimeUtilities.FloatToTime12(times.Imsak, true);
+                    formatted[0] = times.Imsak.FloatToTime12(true);
                     formatted[1] = TimeUtilities.FloatToTime12(times.Fajr, true);
                     formatted[2] = TimeUtilities.FloatToTime12(times.Sunrise, true);
                     formatted[3] = TimeUtilities.FloatToTime12(times.Dhuhr, true);
@@ -2962,7 +2907,7 @@ namespace SalahTimes.Domain
                     formatted[8] = TimeUtilities.FloatToTime12NS(times.Midnight);
                     break;
                 case TimeFormats.Hour24:
-                    formatted[0] = TimeUtilities.FloatToTime24(times.Imsak);
+                    formatted[0] = times.Imsak.FloatToTime24();
                     formatted[1] = TimeUtilities.FloatToTime24(times.Fajr);
                     formatted[2] = TimeUtilities.FloatToTime24(times.Sunrise);
                     formatted[3] = TimeUtilities.FloatToTime24(times.Dhuhr);
@@ -3175,34 +3120,51 @@ namespace SalahTimes.Domain
             double JD = Math.Floor(365.25 * (year + 4716)) + Math.Floor(30.6001 * (month + 1)) + day + B - 1524.5;
             return JD;
         }
+        public static string DoubleToString(this double time, TimeFormats timeFormat)
+        {
+            switch (timeFormat)
+            {
+                case TimeFormats.Hour24:
+                    return time.FloatToTime24();
+                case TimeFormats.Hour12:
+                    return time.FloatToTime12(true);
+                case TimeFormats.Hour12hNS:
+                    return time.FloatToTime12NS();
+                case TimeFormats.Hfloat:
+                    return time.ToString(CultureInfo.InvariantCulture);
+                default:
+                    return time.FloatToTime24();
+            }
+        }
 
-        public static string FloatToTime12NS(double time)
+        public static string FloatToTime12NS(this double time)
         {
             return FloatToTime12(time, true);
         }
 
-        public static string FloatToTime24(double time)
+        public static string FloatToTime24(this double time)
         {
             if (time < 0)
                 return InvalidTime;
-            time = FixHour(time + 0.5 / 60); // add 0.5 minutes to round
+            time = FixHour(time + 0.5/60); // add 0.5 minutes to round
             double hours = Math.Floor(time);
-            double minutes = Math.Floor((time - hours) * 60);
-            return TimeUtilities.TwoDigitsFormat((int)hours) + ":" + TwoDigitsFormat((int)minutes);
+            double minutes = Math.Floor((time - hours)*60);
+            return TimeUtilities.TwoDigitsFormat((int) hours) + ":" + TwoDigitsFormat((int) minutes);
         }
 
-        public static string FloatToTime12(double time, bool noSuffix)
+        public static string FloatToTime12(this double time, bool noSuffix)
         {
             if (time < 0)
                 return InvalidTime;
-            time = FixHour(time + 0.5 / 60); // add 0.5 minutes to round
+            time = FixHour(time + 0.5/60); // add 0.5 minutes to round
             double hours = Math.Floor(time);
-            double minutes = Math.Floor((time - hours) * 60);
+            double minutes = Math.Floor((time - hours)*60);
             string suffix = hours >= 12 ? " pm" : " am";
-            hours = (hours + 12 - 1) % 12 + 1;
-            return ((int)hours) + ":" + TwoDigitsFormat((int)minutes) + (noSuffix ? "" : suffix);
+            hours = (hours + 12 - 1)%12 + 1;
+            return ((int) hours) + ":" + TwoDigitsFormat((int) minutes) + (noSuffix ? "" : suffix);
         }
-        public static string TwoDigitsFormat(int num)
+
+        private static string TwoDigitsFormat(int num)
         {
             return (num < 10) ? "0" + num : num + "";
         }
@@ -3214,13 +3176,13 @@ namespace SalahTimes.Domain
 
         private static double Fix(double a, int b)
         {
-            a = a - b * (Math.Floor(a / b));
+            a = a - b*(Math.Floor(a/b));
             return (a < 0) ? a + b : a;
         }
     }
+
     public class MoonsightCalculationMethod
     {
-
         //private double Latitude { get; }
         //private DateTime CalculationDate { get; }
         //public MoonsightCalculationMethod(double latitute, DateTime calculationDate)
@@ -3231,102 +3193,105 @@ namespace SalahTimes.Domain
 
         public double CalculateIshaMinimumGeneral(double lt, DateTime dateTime)
         {
-            double A = 75 + (25.6 / 55.0) * Math.Abs(lt);
-            double B = 75 + (2.05 / 55.0) * Math.Abs(lt);
-            double C = 75 - (9.21 / 55.0) * Math.Abs(lt);
-            double D = 75 + (6.14 / 55.0) * Math.Abs(lt);
+            double A = 75 + (25.6/55.0)*Math.Abs(lt);
+            double B = 75 + (2.05/55.0)*Math.Abs(lt);
+            double C = 75 - (9.21/55.0)*Math.Abs(lt);
+            double D = 75 + (6.14/55.0)*Math.Abs(lt);
             var DYY = DaysSinceSolstice(dateTime.DayOfYear, dateTime.Year, lt);
             double minimum = 0;
 
             if (DYY < 91)
-                minimum = A + ((B - A) / 91) * DYY;
+                minimum = A + ((B - A)/91)*DYY;
             else if (DYY < 137)
-                minimum = B + ((C - B) / 46) * (DYY - 91);
+                minimum = B + ((C - B)/46)*(DYY - 91);
             else if (DYY < 183)
-                minimum = C + ((D - C) / 46) * (DYY - 137);
+                minimum = C + ((D - C)/46)*(DYY - 137);
             else if (DYY < 229)
-                minimum = D + ((C - D) / 46) * (DYY - 183);
+                minimum = D + ((C - D)/46)*(DYY - 183);
             else if (DYY < 275)
-                minimum = C + ((B - C) / 46) * (DYY - 229);
+                minimum = C + ((B - C)/46)*(DYY - 229);
             else if (DYY >= 275)
-                minimum = B + ((A - B) / 91) * (DYY - 275);
+                minimum = B + ((A - B)/91)*(DYY - 275);
 
             return minimum;
         }
+
         public double CalculateIshaMinimumAbyad(double lt, DateTime dateTime)
         {
-            var A = 75 + (25.6 / 55) * Math.Abs(lt);
-            var B = 75 + (7.16 / 55) * Math.Abs(lt);
-            var C = 75 + (36.84 / 55) * Math.Abs(lt);
-            var D = 75 + (81.84 / 55) * Math.Abs(lt);
+            var A = 75 + (25.6/55)*Math.Abs(lt);
+            var B = 75 + (7.16/55)*Math.Abs(lt);
+            var C = 75 + (36.84/55)*Math.Abs(lt);
+            var D = 75 + (81.84/55)*Math.Abs(lt);
             var DYY = DaysSinceSolstice(dateTime.DayOfYear, dateTime.Year, lt);
             double minimum = 0;
 
             if (DYY < 91)
-                minimum = A + ((B - A) / 91) * DYY;
+                minimum = A + ((B - A)/91)*DYY;
             else if (DYY < 137)
-                minimum = B + ((C - B) / 46) * (DYY - 91);
+                minimum = B + ((C - B)/46)*(DYY - 91);
             else if (DYY < 183)
-                minimum = C + ((D - C) / 46) * (DYY - 137);
+                minimum = C + ((D - C)/46)*(DYY - 137);
             else if (DYY < 229)
-                minimum = D + ((C - D) / 46) * (DYY - 183);
+                minimum = D + ((C - D)/46)*(DYY - 183);
             else if (DYY < 275)
-                minimum = C + ((B - C) / 46) * (DYY - 229);
+                minimum = C + ((B - C)/46)*(DYY - 229);
             else if (DYY >= 275)
-                minimum = B + ((A - B) / 91) * (DYY - 275);
+                minimum = B + ((A - B)/91)*(DYY - 275);
 
             return minimum;
         }
+
         public double CalculateFarjMinimumGeneral(double lt, DateTime dateTime)
         {
-            var A = 75 + (28.65 / 55) * Math.Abs(lt);
-            var B = 75 + (19.44 / 55) * Math.Abs(lt);
-            var C = 75 + (32.74 / 55) * Math.Abs(lt);
-            var D = 75 + (48.1 / 55) * Math.Abs(lt);
+            var A = 75 + (28.65/55)*Math.Abs(lt);
+            var B = 75 + (19.44/55)*Math.Abs(lt);
+            var C = 75 + (32.74/55)*Math.Abs(lt);
+            var D = 75 + (48.1/55)*Math.Abs(lt);
             var DYY = DaysSinceSolstice(dateTime.DayOfYear, dateTime.Year, lt);
 
             double minimum = 0;
 
             if (DYY < 91)
-                minimum = A + ((B - A) / 91) * DYY;
+                minimum = A + ((B - A)/91)*DYY;
             else if (DYY < 137)
-                minimum = B + ((C - B) / 46) * (DYY - 91);
+                minimum = B + ((C - B)/46)*(DYY - 91);
             else if (DYY < 183)
-                minimum = C + ((D - C) / 46) * (DYY - 137);
+                minimum = C + ((D - C)/46)*(DYY - 137);
             else if (DYY < 229)
-                minimum = D + ((C - D) / 46) * (DYY - 183);
+                minimum = D + ((C - D)/46)*(DYY - 183);
             else if (DYY < 275)
-                minimum = C + ((B - C) / 46) * (DYY - 229);
+                minimum = C + ((B - C)/46)*(DYY - 229);
             else if (DYY >= 275)
-                minimum = B + ((A - B) / 91) * (DYY - 275);
+                minimum = B + ((A - B)/91)*(DYY - 275);
 
             return minimum;
         }
 
         public double CalculateIshaMinimumAhmer(double lt, DateTime dateTime)
         {
-            var A = 62 + (17.4 / 55) * Math.Abs(lt);
-            var B = 62 - (7.16 / 55) * Math.Abs(lt);
-            var C = 62 + (5.12 / 55) * Math.Abs(lt);
-            var D = 62 + (19.44 / 55) * Math.Abs(lt);
+            var A = 62 + (17.4/55)*Math.Abs(lt);
+            var B = 62 - (7.16/55)*Math.Abs(lt);
+            var C = 62 + (5.12/55)*Math.Abs(lt);
+            var D = 62 + (19.44/55)*Math.Abs(lt);
             var DYY = DaysSinceSolstice(dateTime.DayOfYear, dateTime.Year, lt);
             double minimum = 0;
 
             if (DYY < 91)
-                minimum = A + ((B - A) / 91) * DYY;
+                minimum = A + ((B - A)/91)*DYY;
             else if (DYY < 137)
-                minimum = B + ((C - B) / 46) * (DYY - 91);
+                minimum = B + ((C - B)/46)*(DYY - 91);
             else if (DYY < 183)
-                minimum = C + ((D - C) / 46) * (DYY - 137);
+                minimum = C + ((D - C)/46)*(DYY - 137);
             else if (DYY < 229)
-                minimum = D + ((C - D) / 46) * (DYY - 183);
+                minimum = D + ((C - D)/46)*(DYY - 183);
             else if (DYY < 275)
-                minimum = C + ((B - C) / 46) * (DYY - 229);
+                minimum = C + ((B - C)/46)*(DYY - 229);
             else if (DYY >= 275)
-                minimum = B + ((A - B) / 91) * (DYY - 275);
+                minimum = B + ((A - B)/91)*(DYY - 275);
 
             return minimum;
         }
+
         private static int DaysSinceSolstice(int dayOfYear, int year, double latitude)
         {
             int daysSinceSolistice;
@@ -3352,6 +3317,145 @@ namespace SalahTimes.Domain
                 }
             }
             return daysSinceSolistice;
+        }
+    }
+
+    public class PrayerTimes1
+    {
+        public string ImsakHour => _imsak.DoubleToString(this._dateComponent.TimeFormat);
+        public string FajrHour => _fajr.DoubleToString(this._dateComponent.TimeFormat);
+        public string SunriseHour =>_sunrise.DoubleToString(this._dateComponent.TimeFormat);
+        public string DhuhrHour => _dhuhr.DoubleToString(this._dateComponent.TimeFormat);
+        public string AsrHour => _asr.DoubleToString(this._dateComponent.TimeFormat);
+        public string SunsetHour => _sunset.DoubleToString(this._dateComponent.TimeFormat);
+        public string MaghribHour => _maghrib.DoubleToString(this._dateComponent.TimeFormat);
+        public string IshaHour => _isha.DoubleToString(this._dateComponent.TimeFormat);
+        public string MidnightHour => _midnight.DoubleToString(this._dateComponent.TimeFormat);
+
+        private double _imsak { get; set; }
+        private double _fajr { get; set; }
+        private double _sunrise { get; set; }
+        private double _dhuhr { get; set; }
+        private double _asr { get; set; }
+        private double _sunset { get; set; }
+        private double _maghrib { get; set; }
+        private double _isha { get; set; }
+        private double _midnight { get; set; }
+
+
+        private double _jDate { get; }
+        private readonly DateComponent _dateComponent;
+        private readonly Coordinates _coordinates;
+        private readonly CalculationParameters _calculationParameters;
+        private AstronomicalCalculations _astronomicalCalculationsInstance;
+        private int _numIterations = 1;
+
+        public PrayerTimes1(DateComponent dateComponent, Coordinates coordinates, CalculationMethods calculationMethod)
+        {
+            SetStartTimesForCalculation();
+            this._dateComponent = dateComponent;
+            this._coordinates = coordinates;
+            this._calculationParameters = CalculationParameters.SetCalculationMethod(calculationMethod);
+            this._jDate = TimeUtilities.Julian(dateComponent.CalculationDate.Year, dateComponent.CalculationDate.Month, dateComponent.CalculationDate.Day) - coordinates.Longtitud/(15*24);
+
+            _astronomicalCalculationsInstance = new AstronomicalCalculations(calculationMethod);
+        }
+
+        public void GetTimes()
+        {
+            this.ComputeTimes();
+        }
+
+        private void ComputeTimes()
+        {
+            for (var i = 0; i < _numIterations; i++)
+                ComputePrayerTimes();
+
+            AjdustTimeZone();
+
+            AdjustTimes();
+
+            TuneTimes();
+        }
+
+        private void ComputePrayerTimes()
+        {
+            this.SetTimesDayPortion();
+
+            _sunrise = AstronomicalCalculations.SunAngleTime(AstronomicalCalculations.RiseSetAngle(_coordinates.Elevation), this._sunrise, _jDate, _coordinates.Latitude, isCcwDirection: true);
+            _sunset = AstronomicalCalculations.SunAngleTime(AstronomicalCalculations.RiseSetAngle(_coordinates.Elevation), this._sunset, _jDate, _coordinates.Latitude);
+            _fajr = CalculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? AstronomicalCalculations.MoonSightFarj(_sunrise, _coordinates.Latitude, _dateComponent.CalculationDate) : AstronomicalCalculations.SunAngleTime(_calculationParameters.FajrAngle, _fajr, _jDate, _coordinates.Latitude, isCcwDirection: true);
+            _dhuhr = AstronomicalCalculations.MidDay(this._dhuhr, _jDate);
+            _asr = AstronomicalCalculations.AsrTime((int) (_calculationParameters.AsrMethodCalculation) + 1, this._asr, _jDate, _coordinates.Latitude);
+            _maghrib = AstronomicalCalculations.SunAngleTime(_calculationParameters.MaghribAngle, this._maghrib, _jDate, _coordinates.Latitude);
+            _isha = CalculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? AstronomicalCalculations.MoonSightIsha(_sunset, _coordinates.Latitude, _dateComponent.CalculationDate) : AstronomicalCalculations.SunAngleTime(_calculationParameters.IshaAngle, _isha, _jDate, _coordinates.Latitude);
+            _midnight = (_calculationParameters.MidnightMethod == MidnightMethod.Jafari) ? _sunset + TimeUtilities.TimeDiff(_sunset, _fajr)/2 : _sunset + TimeUtilities.TimeDiff(_sunset, _sunrise)/2;
+            //We set default time for Imsak equal to Fajr
+        }
+
+        private void TuneTimes()
+        {
+            this._fajr += _calculationParameters.PrayerTimeAdjustments.Fajr/60.0;
+            this._imsak = this._fajr + _calculationParameters.PrayerTimeAdjustments.Imsak/60.0;
+            this._dhuhr += _calculationParameters.PrayerTimeAdjustments.Dhuhr/60.0;
+            this._asr += _calculationParameters.PrayerTimeAdjustments.Asr/60.0;
+            this._maghrib += _calculationParameters.PrayerTimeAdjustments.Maghrib/60.0;
+            this._isha += _calculationParameters.PrayerTimeAdjustments.Isha/60.0;
+        }
+
+        private void AdjustTimes()
+        {
+            if (_calculationParameters.HighLatituteRule != HighLatitudeRule.None)
+                this.AdjustHighLats();
+
+            if (Math.Abs(_calculationParameters.MaghribAngle) < 0.001)
+                this._maghrib = this._sunset + _calculationParameters.MaghribAngle/60.0;
+            if (_calculationParameters.IshaIntervalAfterMaghrib > 0)
+                this._isha = this._maghrib + _calculationParameters.IshaIntervalAfterMaghrib/60.0;
+        }
+
+        private void AjdustTimeZone()
+        {
+            this._imsak += _dateComponent.TimeZone - _coordinates.Longtitud/15;
+            this._fajr += _dateComponent.TimeZone - _coordinates.Longtitud/15;
+            this._sunrise += _dateComponent.TimeZone - _coordinates.Longtitud/15;
+            this._dhuhr += _dateComponent.TimeZone - _coordinates.Longtitud/15;
+            this._asr += _dateComponent.TimeZone - _coordinates.Longtitud/15;
+            this._sunset += _dateComponent.TimeZone - _coordinates.Longtitud/15;
+            this._maghrib += _dateComponent.TimeZone - _coordinates.Longtitud/15;
+            this._isha += _dateComponent.TimeZone - _coordinates.Longtitud/15;
+        }
+
+        private void AdjustHighLats()
+        {
+            var nightTime = TimeUtilities.TimeDiff(this._sunset, this._sunrise);
+
+            this._fajr = AstronomicalCalculations.AdjustTimeForHighLatitutes(this._fajr, this._sunrise, _calculationParameters.FajrAngle, nightTime, _calculationParameters.HighLatituteRule, isCcwDirection: true);
+            this._isha = AstronomicalCalculations.AdjustTimeForHighLatitutes(this._isha, this._sunset, _calculationParameters.IshaAngle, nightTime, _calculationParameters.HighLatituteRule);
+        }
+
+        private void SetStartTimesForCalculation()
+        {
+            this._imsak = 5;
+            this._fajr = 5;
+            this._sunrise = 6;
+            this._dhuhr = 12;
+            this._asr = 13;
+            this._sunset = 18;
+            this._maghrib = 18;
+            this._isha = 18;
+            this._midnight = 18;
+        }
+        private void SetTimesDayPortion()
+        {
+            this._imsak /= 24;
+            this._fajr /= 24;
+            this._sunrise /= 24;
+            this._dhuhr /= 24;
+            this._asr /= 24;
+            this._sunset /= 24;
+            this._maghrib /= 24;
+            this._isha /= 24;
         }
     }
 }

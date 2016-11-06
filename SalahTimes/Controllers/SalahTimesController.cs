@@ -34,11 +34,14 @@ namespace SalahTimes.Controllers
             
                 //var calc1 = new NewTimesCalc(true);
                 //var times2 = calc1.getTimes(new DateComponent(todaysDate, timezone), new Coordinates(59.61, 16.545, 0), CalculationMethods.UMM_AL_QURA);
-                var calc1= new NewTimesCalc(true);
-                var times2 = calc1.getTimes(new DateComponent(todaysDate, timezone), new Coordinates(59.598546, 16.511995, 0),CalculationMethods.MOON_SIGHTING_COMMITTEE);
+                var calc1= new NewTimesCalc(new DateComponent(todaysDate, timezone), new Coordinates(59.598546, 16.511995, 0), CalculationMethods.MOON_SIGHTING_COMMITTEE);
+                var times2 = calc1.getTimes();
 
+            var calc2 = new PrayerTimes1(new DateComponent(todaysDate, timezone), new Coordinates(59.598546, 16.511995, 0), CalculationMethods.MOON_SIGHTING_COMMITTEE);
+            calc2.GetTimes();
+            var times3 = new string[] {calc2.ImsakHour,calc2.FajrHour, calc2.SunriseHour, calc2.DhuhrHour,calc2.AsrHour, calc2.SunsetHour, calc2.MaghribHour,calc2.IshaHour,calc2.MidnightHour};
             // the code that you want to measure comes here
-                var calc = new PrayerTimeCalcBackup(true);
+            var calc = new PrayerTimeCalcBackup(true);
                 var times1 = calc.getTimes(todaysDate, 59.598546, 16.511995, timezone, 0);
 
 

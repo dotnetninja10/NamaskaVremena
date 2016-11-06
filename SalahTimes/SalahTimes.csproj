@@ -87,6 +87,7 @@
     <Compile Include="Domain\NewTimesCalc.cs" />
     <Compile Include="Domain\PrayerTimeCalcBackup.cs" />
     <Compile Include="Domain\PraytimeCalculator.cs" />
+    <Compile Include="Domain\SalahTimesD.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
