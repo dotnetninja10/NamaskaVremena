@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "ViewMap";
+}
+
+<h2>ViewMap</h2>
+
+<script type="text/javascript">
+    var Map;
+    var DrawingManager;
+    var Field;
+    var InfoWindow;
+    var centerpointofMaps;
+    var marker = null;
+
+    function initialize() { // assign map the options of zoom and give center points.
+        centerpointofMaps = new google.maps.LatLng(45, 18.00);
+        var mapOpt = {
+            zoom: 12,
+            center: centerpoint,
+            mapTypeId: google.maps.MapTypeId.HYBRID
+        }; //initialize the object Map.
+        Map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
+        InfoWindow = new google.maps.InfoWindow(); // Add drawing tools in Map
+        PolygonDrawingTools();
+    }
+</script>
+<script language="javascript">
+    $("#btnShowMaps").bind("click", function() {
+        setTimeout(function() { initialize(); }, 1);
+
+    });
+</script>
+<button type="button" id="btnShowMaps"> Show  Map</button>

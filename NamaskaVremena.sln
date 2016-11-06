@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NamaskaVremena", "NamaskaVremena\NamaskaVremena.csproj", "{D3FDAA3D-C4DB-40E8-BD7F-0305764A2742}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculateTimes", "CalculateTimes\CalculateTimes.csproj", "{700BC7D8-9D00-4758-82C8-F6E714C260AD}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SalahTimesAPI", "SalahTimesAPI\SalahTimesAPI.xproj", "{0E94425F-2E2A-4219-8A6B-A9515CDC21FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalahTimes", "SalahTimes\SalahTimes.csproj", "{0EE22FA5-6271-4074-B2AA-CA44AB278839}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D3FDAA3D-C4DB-40E8-BD7F-0305764A2742}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3FDAA3D-C4DB-40E8-BD7F-0305764A2742}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3FDAA3D-C4DB-40E8-BD7F-0305764A2742}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3FDAA3D-C4DB-40E8-BD7F-0305764A2742}.Release|Any CPU.Build.0 = Release|Any CPU
+		{700BC7D8-9D00-4758-82C8-F6E714C260AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{700BC7D8-9D00-4758-82C8-F6E714C260AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{700BC7D8-9D00-4758-82C8-F6E714C260AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{700BC7D8-9D00-4758-82C8-F6E714C260AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E94425F-2E2A-4219-8A6B-A9515CDC21FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E94425F-2E2A-4219-8A6B-A9515CDC21FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E94425F-2E2A-4219-8A6B-A9515CDC21FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E94425F-2E2A-4219-8A6B-A9515CDC21FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EE22FA5-6271-4074-B2AA-CA44AB278839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EE22FA5-6271-4074-B2AA-CA44AB278839}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EE22FA5-6271-4074-B2AA-CA44AB278839}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EE22FA5-6271-4074-B2AA-CA44AB278839}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
