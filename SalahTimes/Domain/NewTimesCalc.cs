@@ -2811,13 +2811,13 @@ namespace SalahTimes.Domain
         {
             var portionTimes = times.DayPortion(times);
 
-            var sunrise = AstronomicalCalculations.SunAngleTime(AstronomicalCalculations.RiseSetAngle(_coordinates.Elevation), portionTimes.Sunrise, JDate, _coordinates.Latitude, isCcwDirection: true);
-            var sunset = AstronomicalCalculations.SunAngleTime(AstronomicalCalculations.RiseSetAngle(_coordinates.Elevation), portionTimes.Sunset, JDate, _coordinates.Latitude);
-            var fajr = CalculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? AstronomicalCalculations.MoonSightFarj(sunrise,_coordinates.Latitude,_dateComponent.CalculationDate) : AstronomicalCalculations.SunAngleTime(_calculationParameters.FajrAngle, portionTimes.Fajr, JDate, _coordinates.Latitude, isCcwDirection: true);
-            var dhuhr = AstronomicalCalculations.MidDay(portionTimes.Dhuhr, JDate);
-            var asr = AstronomicalCalculations.AsrTime((int)(_calculationParameters.AsrMethodCalculation) + 1, portionTimes.Asr, JDate, _coordinates.Latitude);
-            var maghrib = AstronomicalCalculations.SunAngleTime(_calculationParameters.MaghribAngle, portionTimes.Maghrib, JDate, _coordinates.Latitude);
-            var isha = CalculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? AstronomicalCalculations.MoonSightIsha(sunset, _coordinates.Latitude, _dateComponent.CalculationDate) : AstronomicalCalculations.SunAngleTime(_calculationParameters.IshaAngle, portionTimes.Isha, JDate, _coordinates.Latitude);
+            var sunrise = _astronomicalCalculationsInstance.SunAngleTime(_astronomicalCalculationsInstance.RiseSetAngle(_coordinates.Elevation), portionTimes.Sunrise, JDate, _coordinates.Latitude, isCcwDirection: true);
+            var sunset = _astronomicalCalculationsInstance.SunAngleTime(_astronomicalCalculationsInstance.RiseSetAngle(_coordinates.Elevation), portionTimes.Sunset, JDate, _coordinates.Latitude);
+            var fajr = CalculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? _astronomicalCalculationsInstance.MoonSightFarj(sunrise,_coordinates.Latitude,_dateComponent.CalculationDate) : _astronomicalCalculationsInstance.SunAngleTime(_calculationParameters.FajrAngle, portionTimes.Fajr, JDate, _coordinates.Latitude, isCcwDirection: true);
+            var dhuhr = _astronomicalCalculationsInstance.MidDay(portionTimes.Dhuhr, JDate);
+            var asr = _astronomicalCalculationsInstance.AsrTime((int)(_calculationParameters.AsrMethodCalculation) + 1, portionTimes.Asr, JDate, _coordinates.Latitude);
+            var maghrib = _astronomicalCalculationsInstance.SunAngleTime(_calculationParameters.MaghribAngle, portionTimes.Maghrib, JDate, _coordinates.Latitude);
+            var isha = CalculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? _astronomicalCalculationsInstance.MoonSightIsha(sunset, _coordinates.Latitude, _dateComponent.CalculationDate) : _astronomicalCalculationsInstance.SunAngleTime(_calculationParameters.IshaAngle, portionTimes.Isha, JDate, _coordinates.Latitude);
             var midnight = (_calculationParameters.MidnightMethod == MidnightMethod.Jafari)
                 ? sunset + TimeUtilities.TimeDiff(sunset, fajr)/2
                 : sunset + TimeUtilities.TimeDiff(sunset, sunrise)/2;
@@ -2862,8 +2862,8 @@ namespace SalahTimes.Domain
         {
             var nightTime = TimeUtilities.TimeDiff(times.Sunset, times.Sunrise);
 
-            times.Fajr = AstronomicalCalculations.AdjustTimeForHighLatitutes(times.Fajr, times.Sunrise, _calculationParameters.FajrAngle, nightTime, _calculationParameters.HighLatituteRule, isCcwDirection: true);
-            times.Isha = AstronomicalCalculations.AdjustTimeForHighLatitutes(times.Isha, times.Sunset, _calculationParameters.IshaAngle, nightTime, _calculationParameters.HighLatituteRule);
+            times.Fajr = _astronomicalCalculationsInstance.AdjustTimeForHighLatitutes(times.Fajr, times.Sunrise, _calculationParameters.FajrAngle, nightTime, _calculationParameters.HighLatituteRule, isCcwDirection: true);
+            times.Isha = _astronomicalCalculationsInstance.AdjustTimeForHighLatitutes(times.Isha, times.Sunset, _calculationParameters.IshaAngle, nightTime, _calculationParameters.HighLatituteRule);
 
         }
 
@@ -2944,13 +2944,13 @@ namespace SalahTimes.Domain
 
         private struct SunAngle
         {
-            public readonly double declination;
-            public readonly double equation;
+            public readonly double Declination;
+            public readonly double Equation;
 
             public SunAngle(double d, double e)
             {
-                declination = d;
-                equation = e;
+                Declination = d;
+                Equation = e;
             }
         }
         /// <summary>
@@ -2961,16 +2961,16 @@ namespace SalahTimes.Domain
         /// <param name="julianDate"></param>
         /// <param name="latitude"></param>
         /// <returns></returns>
-        public static double AsrTime(int asrFactor, double time, double julianDate, double latitude)
+        public double AsrTime(int asrFactor, double time, double julianDate, double latitude)
         {
-            var decl = SunPosition(julianDate + time).declination;
+            var decl = SunPosition(julianDate + time).Declination;
             var angle = -MathUtilities.ArcCot(asrFactor + MathUtilities.Tan(Math.Abs(latitude - decl)));
             return SunAngleTime(angle, time, julianDate, latitude);
         }
         //public static double SunAngleTime(double angle, double time, double julianDate, double latitude, string direction = "NODIR")
-        public static double SunAngleTime(double angle, double time, double julianDate, double latitude, bool isCcwDirection = false)
+        public double SunAngleTime(double angle, double time, double julianDate, double latitude, bool isCcwDirection = false)
         {
-            var decl = SunPosition(julianDate + time).declination;
+            var decl = SunPosition(julianDate + time).Declination;
             var noon = MidDay(time, julianDate);
             var t = (1 / 15.0) *
                     MathUtilities.ArcCos((-MathUtilities.Sin(angle) - MathUtilities.Sin(decl) * MathUtilities.Sin(latitude)) / (MathUtilities.Cos(decl) * MathUtilities.Cos(latitude)));
@@ -2992,20 +2992,20 @@ namespace SalahTimes.Domain
             return new SunAngle(decl, eqt);
 
         }
-        public static double MoonSightIsha(double sunset,double latitude,DateTime calculationDate)
+        public double MoonSightIsha(double sunset,double latitude,DateTime calculationDate)
         {
             var minutes = _moonsightCalculationMethod.CalculateIshaMinimumGeneral(latitude, calculationDate);
             return sunset + (minutes / 60);
         }
 
-        public static double MoonSightFarj(double sunrise, double latitude, DateTime calculationDate)
+        public double MoonSightFarj(double sunrise, double latitude, DateTime calculationDate)
         {
             var minutes = _moonsightCalculationMethod.CalculateFarjMinimumGeneral(latitude, calculationDate);
             return sunrise - (minutes / 60);
         }
-        public static double MidDay(double time, double julianDate)
+        public double MidDay(double time, double julianDate)
         {
-            var eqt = SunPosition(julianDate + time).equation;
+            var eqt = SunPosition(julianDate + time).Equation;
             var noon = TimeUtilities.FixHour(12 - eqt);
             return noon;
         }
@@ -3024,7 +3024,7 @@ namespace SalahTimes.Domain
             return portion * night;
         }
 
-        public static double AdjustTimeForHighLatitutes(double time, double bases, double angle, double night, HighLatitudeRule highLatitudeRule, bool isCcwDirection = false)
+        public double AdjustTimeForHighLatitutes(double time, double bases, double angle, double night, HighLatitudeRule highLatitudeRule, bool isCcwDirection = false)
         {
             var portion = NightPortion(angle, night, highLatitudeRule);
             var timeDiff = isCcwDirection
@@ -3040,7 +3040,7 @@ namespace SalahTimes.Domain
             return (angle < 0) ? angle + 360 : angle;
         }
 
-        public static double RiseSetAngle(double elevation)
+        public double RiseSetAngle(double elevation)
         {
             var angle = 0.0347 * Math.Sqrt(elevation); // an approximation
             return 0.833 + angle;
@@ -3347,18 +3347,18 @@ namespace SalahTimes.Domain
         private readonly DateComponent _dateComponent;
         private readonly Coordinates _coordinates;
         private readonly CalculationParameters _calculationParameters;
-        private AstronomicalCalculations _astronomicalCalculationsInstance;
+        private readonly AstronomicalCalculations _astronomicalCalculation;
         private int _numIterations = 1;
 
         public PrayerTimes1(DateComponent dateComponent, Coordinates coordinates, CalculationMethods calculationMethod)
         {
-            SetStartTimesForCalculation();
+            this.SetStartTimesForCalculation();
             this._dateComponent = dateComponent;
             this._coordinates = coordinates;
             this._calculationParameters = CalculationParameters.SetCalculationMethod(calculationMethod);
             this._jDate = TimeUtilities.Julian(dateComponent.CalculationDate.Year, dateComponent.CalculationDate.Month, dateComponent.CalculationDate.Day) - coordinates.Longtitud/(15*24);
 
-            _astronomicalCalculationsInstance = new AstronomicalCalculations(calculationMethod);
+            _astronomicalCalculation = new AstronomicalCalculations(calculationMethod);
         }
 
         public void GetTimes()
@@ -3382,15 +3382,16 @@ namespace SalahTimes.Domain
         {
             this.SetTimesDayPortion();
 
-            _sunrise = AstronomicalCalculations.SunAngleTime(AstronomicalCalculations.RiseSetAngle(_coordinates.Elevation), this._sunrise, _jDate, _coordinates.Latitude, isCcwDirection: true);
-            _sunset = AstronomicalCalculations.SunAngleTime(AstronomicalCalculations.RiseSetAngle(_coordinates.Elevation), this._sunset, _jDate, _coordinates.Latitude);
-            _fajr = CalculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? AstronomicalCalculations.MoonSightFarj(_sunrise, _coordinates.Latitude, _dateComponent.CalculationDate) : AstronomicalCalculations.SunAngleTime(_calculationParameters.FajrAngle, _fajr, _jDate, _coordinates.Latitude, isCcwDirection: true);
-            _dhuhr = AstronomicalCalculations.MidDay(this._dhuhr, _jDate);
-            _asr = AstronomicalCalculations.AsrTime((int) (_calculationParameters.AsrMethodCalculation) + 1, this._asr, _jDate, _coordinates.Latitude);
-            _maghrib = AstronomicalCalculations.SunAngleTime(_calculationParameters.MaghribAngle, this._maghrib, _jDate, _coordinates.Latitude);
-            _isha = CalculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? AstronomicalCalculations.MoonSightIsha(_sunset, _coordinates.Latitude, _dateComponent.CalculationDate) : AstronomicalCalculations.SunAngleTime(_calculationParameters.IshaAngle, _isha, _jDate, _coordinates.Latitude);
+            _sunrise = _astronomicalCalculation.SunAngleTime(_astronomicalCalculation.RiseSetAngle(_coordinates.Elevation), this._sunrise, _jDate, _coordinates.Latitude, isCcwDirection: true);
+            _sunset = _astronomicalCalculation.SunAngleTime(_astronomicalCalculation.RiseSetAngle(_coordinates.Elevation), this._sunset, _jDate, _coordinates.Latitude);
+            _fajr = CalculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? _astronomicalCalculation.MoonSightFarj(_sunrise, _coordinates.Latitude, _dateComponent.CalculationDate) : _astronomicalCalculation.SunAngleTime(_calculationParameters.FajrAngle, _fajr, _jDate, _coordinates.Latitude, isCcwDirection: true);
+            _dhuhr = _astronomicalCalculation.MidDay(this._dhuhr, _jDate);
+            _asr = _astronomicalCalculation.AsrTime((int) (_calculationParameters.AsrMethodCalculation) + 1, this._asr, _jDate, _coordinates.Latitude);
+            _maghrib = _astronomicalCalculation.SunAngleTime(_calculationParameters.MaghribAngle, this._maghrib, _jDate, _coordinates.Latitude);
+            _isha = CalculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? _astronomicalCalculation.MoonSightIsha(_sunset, _coordinates.Latitude, _dateComponent.CalculationDate) : _astronomicalCalculation.SunAngleTime(_calculationParameters.IshaAngle, _isha, _jDate, _coordinates.Latitude);
             _midnight = (_calculationParameters.MidnightMethod == MidnightMethod.Jafari) ? _sunset + TimeUtilities.TimeDiff(_sunset, _fajr)/2 : _sunset + TimeUtilities.TimeDiff(_sunset, _sunrise)/2;
             //We set default time for Imsak equal to Fajr
+            _imsak = _fajr;
         }
 
         private void TuneTimes()
@@ -3430,8 +3431,8 @@ namespace SalahTimes.Domain
         {
             var nightTime = TimeUtilities.TimeDiff(this._sunset, this._sunrise);
 
-            this._fajr = AstronomicalCalculations.AdjustTimeForHighLatitutes(this._fajr, this._sunrise, _calculationParameters.FajrAngle, nightTime, _calculationParameters.HighLatituteRule, isCcwDirection: true);
-            this._isha = AstronomicalCalculations.AdjustTimeForHighLatitutes(this._isha, this._sunset, _calculationParameters.IshaAngle, nightTime, _calculationParameters.HighLatituteRule);
+            this._fajr = _astronomicalCalculation.AdjustTimeForHighLatitutes(this._fajr, this._sunrise, _calculationParameters.FajrAngle, nightTime, _calculationParameters.HighLatituteRule, isCcwDirection: true);
+            this._isha = _astronomicalCalculation.AdjustTimeForHighLatitutes(this._isha, this._sunset, _calculationParameters.IshaAngle, nightTime, _calculationParameters.HighLatituteRule);
         }
 
         private void SetStartTimesForCalculation()
