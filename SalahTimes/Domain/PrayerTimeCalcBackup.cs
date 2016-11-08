@@ -68,12 +68,12 @@ namespace SalahTimes.Domain
             /// <param name="fajrAng">angle to calculate fajr with</param>
             /// <param name="dhu">dhur begins minutes after suns peek</param>
             /// <param name="mag"></param>
-            /// <param name="ishaAng">angle with which to calculate isha</param>
+            /// <param name="ishaAng">angle with which to calculate Isha</param>
             /// <param name="asrMethod">Juridisc method for ASR</param>
             /// <param name="highlatmethod"></param>
             /// <param name="midnightMethod"></param>
             /// <param name="magribMin">Minutes after sunset, if you put zero then it is as sunset</param>
-            /// <param name="ishaMin">Number of minutes after maghrib isha begins</param>
+            /// <param name="ishaMin">Number of minutes after Maghrib Isha begins</param>
             //public DefaultSetting(int ims, double fajrAng, int dhu,double mag, double ishaAng, ASRMETHOD asrMethod,HIGHLATMETHOD highlatmethod,MIDHIGHTMETHOD midnightMethod, short magribMin, short ishaMin)
             public DefaultSetting(short ims, double fajrAng, int dhu, double maghribAng, double ishaAng,
                 ASRMETHOD asrMethod, HIGHLATMETHOD highlatmethod, MIDHIGHTMETHOD midnightMethod, short magribMin,
@@ -168,7 +168,7 @@ namespace SalahTimes.Domain
 
         private String[] computeTimes()
         {
-            //i,faj,sr,dhu,asr,ss,magr,ish,
+            //i,faj,sr,dhu,Asr,ss,magr,ish,
             double[] times = { 5, 5, 6, 12, 13, 18, 18, 18 }; //default times
             //Times times=new Times(5, 5, 6, 12, 13, 18, 18, 18, 18);
 
@@ -228,7 +228,7 @@ namespace SalahTimes.Domain
             var fajr = this.sunAngleTime(parameters.fajrAngle, times[1], CCW);
             var sunrise = this.sunAngleTime(this.riseSetAngle(), times[2], CCW);
             var dhuhr = this.midDay(times[3]);
-            //var asr = this.asrTime(this.asrFactor(parameters.asr), times.asr);
+            //var Asr = this.asrTime(this.asrFactor(parameters.Asr), times.Asr);
             var asr = this.asrTime(this.selectedAsrMethod, times[4]);
             var sunset = this.sunAngleTime(this.riseSetAngle(), times[5]);
             var maghrib = this.sunAngleTime(parameters.maghribMinutes, times[6]);

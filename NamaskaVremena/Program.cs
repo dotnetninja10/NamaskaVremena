@@ -62,6 +62,31 @@ namespace NamaskaVremena
             //var times2 = calc1.getTimes(new DateComponent(todaysDate, 1), new Coordinates(42.17, 12.04, 0), CalculationMethods.MOON_SIGHTING_COMMITTEE);
             int y = 2015, m = 11, d = 12, tz = 1;
             //GetSunSetAndSunRise(new DateTime(2015, 4, 21), 59.598554481500855, 16.513191775039672);
+
+
+            //using (
+            //    StreamWriter writer1 =
+            //        new StreamWriter(@"C:\Users\kurarm\Documents\IdM\zones.txt"))
+            //{
+            //    Console.SetOut(writer1);
+            //    var zones = TimeZoneInfo.GetSystemTimeZones();
+            //    foreach (var timeZoneInfo in zones)
+            //    {
+            //        Console.WriteLine("//DaylightName={0}", timeZoneInfo.DaylightName);
+            //        Console.WriteLine("//DisplayName={0}", timeZoneInfo.DisplayName);
+            //        Console.WriteLine("//StandardName={0}", timeZoneInfo.StandardName);
+            //        Console.WriteLine("//BaseUtcOffset={0}", timeZoneInfo.BaseUtcOffset);
+            //        Console.WriteLine("//SupportsDaylightSavingTime={0}", timeZoneInfo.SupportsDaylightSavingTime);
+            //        Console.WriteLine("{0},", timeZoneInfo.Id);
+
+            //    }
+            //}
+
+            var calculator =
+                 new PrayerTimes.PrayerTimesCalculator(
+                     new PrayerTimes.Types.Coordinates(59.598531, 16.512003, 20),
+                     PrayerTimes.Types.CalculationMethods.MOON_SIGHTING_COMMITTEE);
+
             using (
                 StreamWriter writer =
                     new StreamWriter(String.Format(@"C:\Users\kurarm\Documents\IdM\pray{0}.txt", latitude)))
@@ -75,16 +100,21 @@ namespace NamaskaVremena
                     date <= new DateTime(2017, 12, 31);
                     date = date.AddDays(1))
                 {
-                    var timzoneFixed1 = TimeZone.CurrentTimeZone.GetUtcOffset(date.AddDays(1)).Hours;
-                    //Imsak, Fajr, Sunrise, Dhuhr, Asr, Sunset, Maghrib, Isha
+                    //var timzoneFixed1 = TimeZone.CurrentTimeZone.GetUtcOffset(date.AddDays(1)).Hours;
+                    ////Imsak, Fajr, Sunrise, Dhuhr, Asr, Sunset, Maghrib, Isha
 
-                    var times2 = calc1.getTimes(new SalahTimes.Domain.DateComponent(date, timzoneFixed1), 
-                        new SalahTimes.Domain.Coordinates(latitude, longitude, 0), SalahTimes.Domain.CalculationMethods.MOON_SIGHTING_COMMITTEE);
-                    Console.WriteLine("{0} {1} {2} {3} {4} {5} {6} {7}", date.ToShortDateString(), times2[0],times2[1], times2[2], times2[3], times2[4], times2[6], times2[7],timzoneFixed1);
+                    //var times2 = calc1.getTimes(new SalahTimes.Domain.DateComponent(date, timzoneFixed1), 
+                    //    new SalahTimes.Domain.Coordinates(latitude, longitude, 0), SalahTimes.Domain.CalculationMethods.MOON_SIGHTING_COMMITTEE);
+                    //Console.WriteLine("{0} {1} {2} {3} {4} {5} {6} {7}", date.ToShortDateString(), times2[0],times2[1], times2[2], times2[3], times2[4], times2[6], times2[7],timzoneFixed1);
 
-                    //var result=CustomCalc(date.Year, date.Month, date.Day, test, latitude, longitude);
-                    //Console.WriteLine("{6} {0} {1} {2} {3} {4} {5} {7} {8} {9}", result[1],result[2],result[3], result[4],result[6], result[7], date.ToShortDateString(), timzoneFixed, tz1,isDaylight);
-                    //CustomCalc(date.Year, date.Month, date.Day, p, latitude, longitude);
+
+
+                    //var tim=calculator.GetPrayerTimesForDate(new PrayerTimes.Types.DateComponent(date, "W. Europe Standard Time"));
+                    //Console.WriteLine("{0} {1} {2} {3} {4} {5} {6} {7}", date.ToShortDateString(),tim.Imsak, tim.Fajr,tim.Sunrise,tim.Dhuhr,tim.Asr,tim.Maghrib,tim.Isha);
+
+                    var result = CustomCalc(date.Year, date.Month, date.Day, test, latitude, longitude);
+                    Console.WriteLine("{6} {0} {1} {2} {3} {4} {5} {7} {8} {9}", result[1], result[2], result[3], result[4], result[6], result[7], date.ToShortDateString(), timzoneFixed, tz1, isDaylight);
+                    CustomCalc(date.Year, date.Month, date.Day, p, latitude, longitude);
                 }
             }
 

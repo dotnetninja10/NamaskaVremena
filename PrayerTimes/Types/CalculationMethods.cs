@@ -8,6 +8,12 @@ namespace PrayerTimes.Types
 {
     public enum CalculationMethods
     {
+
+        /**
+         * Moonsighting Committee
+         * Uses a Fajr angle of 18 and an Isha angle of 18. Also uses seasonal adjustment values.
+         */
+        MOON_SIGHTING_COMMITTEE,
         /**
          * Muslim World League
          * Uses Fajr angle of 18 and an Isha angle of 17
@@ -38,13 +44,6 @@ namespace PrayerTimes.Types
          * Modified version of Umm al-Qura that uses a Fajr angle of 19.5.
          */
         GULF,
-
-        /**
-         * Moonsighting Committee
-         * Uses a Fajr angle of 18 and an Isha angle of 18. Also uses seasonal adjustment values.
-         */
-        MOON_SIGHTING_COMMITTEE,
-
         /**
          * Referred to as the ISNA method
          * This method is included for completeness, but is not recommended.

@@ -113,9 +113,9 @@ namespace SalahTimes.Domain
         public PraytimeCalculator()
         {
             //times = new int[9];
-            //{fajr angle, maghrib is in minutes, maghrib minutes/angle,
-            //  isha is in minutes, isha minutes/angle,
-            //  isha minute delay and when set use fajr for midnight calculation instead of sunrise
+            //{fajr angle, Maghrib is in minutes, Maghrib minutes/angle,
+            //  Isha is in minutes, Isha minutes/angle,
+            //  Isha minute delay and when set use fajr for midnight calculation instead of sunrise
             methodParams = new double[11][];
             offset = new int[9] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             this.methodParams[Jafari] = new double[] { 16, 0, 4, 0, 14, 1 };
@@ -126,7 +126,7 @@ namespace SalahTimes.Domain
             this.methodParams[Egypt] = new double[] { 19.5, 1, 0, 0, 17.5, 0 };
             this.methodParams[Tehran] = new double[] { 17.7, 0, 4.5, 0, 14, 1 };
             this.methodParams[Morocco] = new double[] { 19, 1, 1.5, 0, 18, 0 };
-            this.methodParams[Malaysia] = new double[] { 20, 0, .83, 0, 18, 0 }; // dzuhr has 2 minute delay, asr has 1 minute delay, maghrib has 2 minute delay, isha has 2 minute delay
+            this.methodParams[Malaysia] = new double[] { 20, 0, .83, 0, 18, 0 }; // dzuhr has 2 minute delay, Asr has 1 minute delay, Maghrib has 2 minute delay, Isha has 2 minute delay
             this.methodParams[Custom] = new double[] { 19, 1, 0, 0, 17, 0 };
             this.methodParams[Moonsight] = new double[] { 18, 0, 0, 0, 18, 0 };
         }
@@ -833,7 +833,7 @@ namespace SalahTimes.Domain
         }
         //public bool UseDayLightaving(int year, int month, int day)
         //{
-        //    return TimeZone.CurrentTimeZone.IsDaylightSavingTime(new DateTime(year, month, day));
+        //    return TimeZoneUtcOffset.CurrentTimeZone.IsDaylightSavingTime(new DateTime(year, month, day));
         //}
 
     }
@@ -968,9 +968,9 @@ namespace SalahTimes.Domain
 //        public PraytimeCalculator()
 //        {
 //            //times = new int[9];
-//            //{fajr angle, maghrib is in minutes, maghrib minutes/angle,
-//            //  isha is in minutes, isha minutes/angle,
-//            //  isha minute delay and when set use fajr for midnight calculation instead of sunrise
+//            //{fajr angle, Maghrib is in minutes, Maghrib minutes/angle,
+//            //  Isha is in minutes, Isha minutes/angle,
+//            //  Isha minute delay and when set use fajr for midnight calculation instead of sunrise
 //            methodParams = new double[10][];
 //            offset = new int[9] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 //            this.methodParams[Jafari] = new double[] { 16, 0, 4, 0, 14, 1 };
@@ -981,7 +981,7 @@ namespace SalahTimes.Domain
 //            this.methodParams[Egypt] = new double[] { 19.5, 1, 0, 0, 17.5, 0 };
 //            this.methodParams[Tehran] = new double[] { 17.7, 0, 4.5, 0, 14, 1 };
 //            this.methodParams[Morocco] = new double[] { 19, 1, 1.5, 0, 18, 0 };
-//            this.methodParams[Malaysia] = new double[] { 20, 0, .83, 0, 18, 0 }; // dzuhr has 2 minute delay, asr has 1 minute delay, maghrib has 2 minute delay, isha has 2 minute delay
+//            this.methodParams[Malaysia] = new double[] { 20, 0, .83, 0, 18, 0 }; // dzuhr has 2 minute delay, Asr has 1 minute delay, Maghrib has 2 minute delay, Isha has 2 minute delay
 //            this.methodParams[Custom] = new double[] { 18, 1, 0, 0, 17, 0 };
 //        }
 

@@ -123,14 +123,14 @@
 //    //        this.Maghrib = 0;
 //    //        this.Isha = 0;
 //    //    }
-//    //    public PrayerTimeAdjustments(short imsak, short fajr, short dhuhr, short asr, short maghrib, short isha)
+//    //    public PrayerTimeAdjustments(short imsak, short fajr, short Dhuhr, short Asr, short Maghrib, short Isha)
 //    //    {
 //    //        this.Imsak = imsak;
 //    //        this.Fajr = fajr;
-//    //        this.Dhuhr = dhuhr;
-//    //        this.Asr = asr;
-//    //        this.Maghrib = maghrib;
-//    //        this.Isha = isha;
+//    //        this.Dhuhr = Dhuhr;
+//    //        this.Asr = Asr;
+//    //        this.Maghrib = Maghrib;
+//    //        this.Isha = Isha;
 //    //    }
 //    //}
 
@@ -175,15 +175,15 @@
 //    //}
 //    //public class Coordinates
 //    //{
-//    //    public double Latitude { get; private set; }
-//    //    public double Longtitud { get; private set; }
+//    //    public double Lat { get; private set; }
+//    //    public double Lon { get; private set; }
 
 //    //    public double Elevation { get; private set; }
 
 //    //    public Coordinates(double lat, double lon)
 //    //    {
-//    //        Latitude = lat;
-//    //        Longtitud = lon;
+//    //        Lat = lat;
+//    //        Lon = lon;
 //    //        Elevation = 0;
 //    //    }
 //    //    public Coordinates(double lat, double lon, int elevation) : this(lat, lon)
@@ -276,7 +276,7 @@
 //    //}
 //    //public class DateComponent
 //    //{
-//    //    public int TimeZone { get; private set; }
+//    //    public int TimeZoneUtcOffset { get; private set; }
 //    //    public DateTime CalculationDate { get; private set; }
 //    //    //JUlianDate
 //    //    public double JulianDate { get; private set; }
@@ -284,7 +284,7 @@
 //    //    public DateComponent(DateTime calculationDate, int timeZone)
 //    //    {
 //    //        this.CalculationDate = calculationDate;
-//    //        this.TimeZone = timeZone;
+//    //        this.TimeZoneUtcOffset = timeZone;
 //    //        this.JulianDate = ToJulianDate(calculationDate.Year, calculationDate.Month, calculationDate.Day);
 //    //    }
 //    //    private double ToJulianDate(int year, int month, int day)
@@ -480,29 +480,29 @@
 //    //        times = this.DayPortion(times);
 //    //        var parameters = this.Parameters;
 
-//    //        var sunrise = SunTimes.SunAngleTime(SunTimes.RiseSetAngle(Coordinate.Elevation), times.Sunrise, Coordinate.Latitude, CCW);
-//    //        var sunset = SunTimes.SunAngleTime(SunTimes.RiseSetAngle(Coordinate.Elevation), times.Sunset, Coordinate.Latitude);
+//    //        var sunrise = SunTimes.SunAngleTime(SunTimes.RiseSetAngle(Coordinate.Elevation), times.Sunrise, Coordinate.Lat, CCW);
+//    //        var sunset = SunTimes.SunAngleTime(SunTimes.RiseSetAngle(Coordinate.Elevation), times.Sunset, Coordinate.Lat);
 
-//    //        var fajr = _useMoonSight ? MoonSightFarj(sunrise) : SunTimes.SunAngleTime(parameters.FajrAngle, times.Fajr, Coordinate.Latitude, CCW);
-//    //        var dhuhr = SunTimes.MidDay(times.Dhuhr);
-//    //        var asr = SunTimes.AsrTime((int)parameters.AsrMethodCalculation, times.Asr, Coordinate.Latitude);
-//    //        var maghrib = SunTimes.SunAngleTime(parameters.MaghribAngle, times.Maghrib, Coordinate.Latitude);
-//    //        var isha = _useMoonSight ? MoonSightIsha(sunset) : SunTimes.SunAngleTime(parameters.IshaAngle, times.Isha, Coordinate.Latitude);
+//    //        var fajr = _useMoonSight ? MoonSightFarj(sunrise) : SunTimes.SunAngleTime(parameters.FajrAngle, times.Fajr, Coordinate.Lat, CCW);
+//    //        var Dhuhr = SunTimes.MidDay(times.Dhuhr);
+//    //        var Asr = SunTimes.AsrTime((int)parameters.AsrMethodCalculation, times.Asr, Coordinate.Lat);
+//    //        var Maghrib = SunTimes.SunAngleTime(parameters.MaghribAngle, times.Maghrib, Coordinate.Lat);
+//    //        var Isha = _useMoonSight ? MoonSightIsha(sunset) : SunTimes.SunAngleTime(parameters.IshaAngle, times.Isha, Coordinate.Lat);
 
-//    //        return new PrayerTimes(times.Imsak, fajr, sunrise, dhuhr, asr, sunset, maghrib, isha, 0.0);
+//    //        return new PrayerTimes(times.Imsak, fajr, sunrise, Dhuhr, Asr, sunset, Maghrib, Isha, 0.0);
 //    //    }
 
 //    //    private PrayerTimes adjustTimes(PrayerTimes times)
 //    //    {
 
-//    //        times.Imsak += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-//    //        times.Fajr += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-//    //        times.Sunrise += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-//    //        times.Dhuhr += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-//    //        times.Asr += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-//    //        times.Sunset += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-//    //        times.Maghrib += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-//    //        times.Isha += DateComponent.TimeZone - Coordinate.Longtitud / 15;
+//    //        times.Imsak += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+//    //        times.Fajr += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+//    //        times.Sunrise += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+//    //        times.Dhuhr += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+//    //        times.Asr += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+//    //        times.Sunset += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+//    //        times.Maghrib += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+//    //        times.Isha += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
 
 //    //        if (Parameters.HighLatituteRule != HighLatitudeRule.None)
 //    //            times = this.adjustHighLats(times);
@@ -513,7 +513,7 @@
 //    //            times.Maghrib = times.Sunset + parameters.maghribMinutes / 60.0;
 //    //        if (parameters.ishaMinutes > 0)
 //    //            times.Isha = times.Maghrib + parameters.ishaAngle / 60.0;
-//    //        times.Dhuhr += parameters.dhuhr / 60.0;
+//    //        times.Dhuhr += parameters.Dhuhr / 60.0;
 //    //        return times;
 
 
@@ -591,14 +591,14 @@
 //    //        private short Maghrib = 0;
 //    //        private short Isha = 0;
 
-//    //        public PrayerTimeAdjustments(short imsak, short fajr, short dhuhr, short asr, short maghrib, short isha)
+//    //        public PrayerTimeAdjustments(short imsak, short fajr, short Dhuhr, short Asr, short Maghrib, short Isha)
 //    //        {
 //    //            this.Imsak = imsak;
 //    //            this.Fajr = fajr;
-//    //            this.Dhuhr = dhuhr;
-//    //            this.Asr = asr;
-//    //            this.Maghrib = maghrib;
-//    //            this.Isha = isha;
+//    //            this.Dhuhr = Dhuhr;
+//    //            this.Asr = Asr;
+//    //            this.Maghrib = Maghrib;
+//    //            this.Isha = Isha;
 //    //        }
 //    //    }
 
@@ -663,22 +663,22 @@
 
 //    //    public class Coordinates
 //    //    {
-//    //        public double Latitude { get; private set; }
-//    //        public double Longtitud { get; private set; }
+//    //        public double Lat { get; private set; }
+//    //        public double Lon { get; private set; }
 
 //    //        public double Elevation { get; private set; }
 
 //    //        public Coordinates(double lat, double lon, int elevation)
 //    //        {
-//    //            Latitude = lat;
-//    //            Longtitud = lon;
+//    //            Lat = lat;
+//    //            Lon = lon;
 //    //            Elevation = elevation;
 //    //        }
 //    //    }
 
 //    //    public class DateSettings
 //    //    {
-//    //        private int TimeZone { get; set; }
+//    //        private int TimeZoneUtcOffset { get; set; }
 //    //        private DateTime CalculationDate { get; set; }
 //    //        //JUlianDate
 //    //        private double JDate { get; set; }
@@ -686,7 +686,7 @@
 //    //        public DateSettings(DateTime calculationDate, int timeZone)
 //    //        {
 
-//    //            this.TimeZone = timeZone;
+//    //            this.TimeZoneUtcOffset = timeZone;
 //    //        }
 
 //    //    }
@@ -739,15 +739,15 @@
 //    }
 //    public class Coordinates
 //    {
-//        public double Latitude { get; private set; }
-//        public double Longtitud { get; private set; }
+//        public double Lat { get; private set; }
+//        public double Lon { get; private set; }
 
 //        public double Elevation { get; private set; }
 
 //        public Coordinates(double lat, double lon)
 //        {
-//            Latitude = lat;
-//            Longtitud = lon;
+//            Lat = lat;
+//            Lon = lon;
 //            Elevation = 0;
 //        }
 //        public Coordinates(double lat, double lon, int elevation) : this(lat, lon)
@@ -758,7 +758,7 @@
 
 //    public class DateComponent
 //    {
-//        public int TimeZone { get; private set; }
+//        public int TimeZoneUtcOffset { get; private set; }
 //        public DateTime CalculationDate { get; private set; }
 //        //JUlianDate
 //        //public double JulianDate { get; private set; }
@@ -766,7 +766,7 @@
 //        public DateComponent(DateTime calculationDate, int timeZone)
 //        {
 //            this.CalculationDate = calculationDate;
-//            this.TimeZone = timeZone;
+//            this.TimeZoneUtcOffset = timeZone;
 //            //this.JulianDate = ToJulianDate(calculationDate.Year, calculationDate.Month, calculationDate.Day);
 //        }
 //        //private double ToJulianDate(int year, int month, int day)
@@ -871,14 +871,14 @@
 //            this.Maghrib = 0;
 //            this.Isha = 0;
 //        }
-//        public PrayerTimeAdjustments(short imsak, short fajr, short dhuhr, short asr, short maghrib, short isha)
+//        public PrayerTimeAdjustments(short imsak, short fajr, short Dhuhr, short Asr, short Maghrib, short Isha)
 //        {
 //            this.Imsak = imsak;
 //            this.Fajr = fajr;
-//            this.Dhuhr = dhuhr;
-//            this.Asr = asr;
-//            this.Maghrib = maghrib;
-//            this.Isha = isha;
+//            this.Dhuhr = Dhuhr;
+//            this.Asr = Asr;
+//            this.Maghrib = Maghrib;
+//            this.Isha = Isha;
 //        }
 //    }
 
@@ -1051,10 +1051,10 @@
 //        {
 //            public short imsakMinutes;
 //            public double fajrAngle;
-//            public double dhuhr;
+//            public double Dhuhr;
 //            public double maghribAngle;
 //            public double ishaAngle;
-//            public ASRMETHOD asr;
+//            public ASRMETHOD Asr;
 //            public HIGHLATMETHOD highLats;
 //            public MIDHIGHTMETHOD midnight;
 
@@ -1068,12 +1068,12 @@
 //            /// <param name="fajrAng">angle to calculate fajr with</param>
 //            /// <param name="dhu">dhur begins minutes after suns peek</param>
 //            /// <param name="mag"></param>
-//            /// <param name="ishaAng">angle with which to calculate isha</param>
+//            /// <param name="ishaAng">angle with which to calculate Isha</param>
 //            /// <param name="asrMethod">Juridisc method for ASR</param>
 //            /// <param name="highlatmethod"></param>
 //            /// <param name="midnightMethod"></param>
 //            /// <param name="magribMin">Minutes after sunset, if you put zero then it is as sunset</param>
-//            /// <param name="ishaMin">Number of minutes after maghrib isha begins</param>
+//            /// <param name="ishaMin">Number of minutes after Maghrib Isha begins</param>
 //            //public DefaultSetting(int ims, double fajrAng, int dhu,double mag, double ishaAng, ASRMETHOD asrMethod,HIGHLATMETHOD highlatmethod,MIDHIGHTMETHOD midnightMethod, short magribMin, short ishaMin)
 //            public DefaultSetting(short ims, double fajrAng, int dhu, double maghribAng, double ishaAng,
 //                ASRMETHOD asrMethod, HIGHLATMETHOD highlatmethod, MIDHIGHTMETHOD midnightMethod, short magribMin,
@@ -1081,8 +1081,8 @@
 //            {
 //                imsakMinutes = ims;
 //                fajrAngle = fajrAng;
-//                dhuhr = dhu;
-//                asr = asrMethod;
+//                Dhuhr = dhu;
+//                Asr = asrMethod;
 //                maghribAngle = maghribAng;
 //                ishaAngle = ishaAng;
 //                highLats = highlatmethod;
@@ -1160,10 +1160,10 @@
 //            this.DateComponent = dateComponent;
 //            this.Coordinates = coordinates;
 //            this.CalculationParameters = CalculationParameters.SetCalculationMethod(method);
-//            //if(coordinates.Latitude>49)
+//            //if(coordinates.Lat>49)
 //            //    CalculationParameters.SetHighLatituteRule(HighLatitudeRule.OneSeventh);
 
-//            this.JDate = this.julian(dateComponent.CalculationDate.Year, dateComponent.CalculationDate.Month, dateComponent.CalculationDate.Day) - coordinates.Longtitud / (15 * 24);
+//            this.JDate = this.julian(dateComponent.CalculationDate.Year, dateComponent.CalculationDate.Month, dateComponent.CalculationDate.Day) - coordinates.Lon / (15 * 24);
 
 //            return this.computeTimes1();
 //        }
@@ -1171,7 +1171,7 @@
 //        {
 //            this.DateComponent = dateComponent;
 //            this.Coordinates = coordinates;
-//            this.JDate = this.julian(dateComponent.CalculationDate.Year, dateComponent.CalculationDate.Month, dateComponent.CalculationDate.Day) - coordinates.Longtitud / (15 * 24);
+//            this.JDate = this.julian(dateComponent.CalculationDate.Year, dateComponent.CalculationDate.Month, dateComponent.CalculationDate.Day) - coordinates.Lon / (15 * 24);
 
 //            //this.CalculationParameters = calculationParameters;
 
@@ -1203,13 +1203,13 @@
 //            var sunrise = this.sunAngleTime(this.riseSetAngle(), times.Sunrise, CCW);
 //            var sunset = this.sunAngleTime(this.riseSetAngle(), times.Sunset);
 //            var fajr = CalculationParameters.SelectedCalculationMethod==CalculationMethods.MOON_SIGHTING_COMMITTEE ? MoonSightFarj(sunrise) : this.sunAngleTime(CalculationParameters.FajrAngle, times.Fajr, CCW);
-//            var dhuhr = this.midDay(times.Dhuhr);
-//            var asr = this.asrTime((int)(CalculationParameters.AsrMethodCalculation+1), times.Asr);
-//            var maghrib = this.sunAngleTime(CalculationParameters.MaghribAngle, times.Maghrib);
-//            var isha = CalculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? MoonSightIsha(sunset) : this.sunAngleTime(CalculationParameters.IshaAngle, times.Isha);
+//            var Dhuhr = this.midDay(times.Dhuhr);
+//            var Asr = this.asrTime((int)(CalculationParameters.AsrMethodCalculation+1), times.Asr);
+//            var Maghrib = this.sunAngleTime(CalculationParameters.MaghribAngle, times.Maghrib);
+//            var Isha = CalculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? MoonSightIsha(sunset) : this.sunAngleTime(CalculationParameters.IshaAngle, times.Isha);
 
-//            //return new Times(times.Imsak, fajr, sunrise, dhuhr, asr, sunset, maghrib, isha, 0.0);
-//            return new Times(fajr, fajr, sunrise, dhuhr, asr, sunset, maghrib, isha, 0.0);
+//            //return new Times(times.Imsak, fajr, sunrise, Dhuhr, Asr, sunset, Maghrib, Isha, 0.0);
+//            return new Times(fajr, fajr, sunrise, Dhuhr, Asr, sunset, Maghrib, Isha, 0.0);
 //        }
 
 
@@ -1290,14 +1290,14 @@
 //        {
 //            //var parameters = _setting;
 
-//            times.Imsak += DateComponent.TimeZone - Coordinates.Longtitud / 15;
-//            times.Fajr += DateComponent.TimeZone - Coordinates.Longtitud / 15;
-//            times.Sunrise += DateComponent.TimeZone - Coordinates.Longtitud / 15;
-//            times.Dhuhr += DateComponent.TimeZone - Coordinates.Longtitud / 15;
-//            times.Asr += DateComponent.TimeZone - Coordinates.Longtitud / 15;
-//            times.Sunset += DateComponent.TimeZone - Coordinates.Longtitud / 15;
-//            times.Maghrib += DateComponent.TimeZone - Coordinates.Longtitud / 15;
-//            times.Isha += DateComponent.TimeZone - Coordinates.Longtitud / 15;
+//            times.Imsak += DateComponent.TimeZoneUtcOffset - Coordinates.Lon / 15;
+//            times.Fajr += DateComponent.TimeZoneUtcOffset - Coordinates.Lon / 15;
+//            times.Sunrise += DateComponent.TimeZoneUtcOffset - Coordinates.Lon / 15;
+//            times.Dhuhr += DateComponent.TimeZoneUtcOffset - Coordinates.Lon / 15;
+//            times.Asr += DateComponent.TimeZoneUtcOffset - Coordinates.Lon / 15;
+//            times.Sunset += DateComponent.TimeZoneUtcOffset - Coordinates.Lon / 15;
+//            times.Maghrib += DateComponent.TimeZoneUtcOffset - Coordinates.Lon / 15;
+//            times.Isha += DateComponent.TimeZoneUtcOffset - Coordinates.Lon / 15;
 
 //            if (CalculationParameters.HighLatituteRule != HighLatitudeRule.None)
 //                times = this.adjustHighLats(times);
@@ -1362,7 +1362,7 @@
 //            var decl = this.sunPosition(JDate + time).declination;
 //            var noon = this.midDay(time);
 //            var t = (1/15.0)*
-//                    this.arccos((-this.dsin(angle) - this.dsin(decl)*this.dsin(Coordinates.Latitude))/(this.dcos(decl)*this.dcos(Coordinates.Latitude)));
+//                    this.arccos((-this.dsin(angle) - this.dsin(decl)*this.dsin(Coordinates.Lat))/(this.dcos(decl)*this.dcos(Coordinates.Lat)));
 //            return noon + (direction == CCW ? -t : t);
 //        }
 
@@ -1406,19 +1406,19 @@
 //        private double asrTime(int factor, double time)
 //        {
 //            var decl = this.sunPosition(JDate+ time).declination;
-//            var angle = -this.arccot(factor + this.dtan(Math.Abs(Coordinates.Latitude - decl)));
+//            var angle = -this.arccot(factor + this.dtan(Math.Abs(Coordinates.Lat - decl)));
 //            return this.sunAngleTime(angle, time);
 //        }
 
 //        private double MoonSightIsha(double sunset)
 //        {
-//            var minutes = CalculateIshaMinimumGeneral(Coordinates.Latitude, DateComponent.CalculationDate);
+//            var minutes = CalculateIshaMinimumGeneral(Coordinates.Lat, DateComponent.CalculationDate);
 //            return sunset + (minutes/60);
 //        }
 
 //        private double MoonSightFarj(double sunrise)
 //        {
-//            var minutes = CalculateFarjMinimumGeneral(Coordinates.Latitude, DateComponent.CalculationDate);
+//            var minutes = CalculateFarjMinimumGeneral(Coordinates.Lat, DateComponent.CalculationDate);
 //            return sunrise - (minutes/60);
 //        }
 
@@ -1827,14 +1827,14 @@ namespace SalahTimes.Experiments
     //        this.Maghrib = 0;
     //        this.Isha = 0;
     //    }
-    //    public PrayerTimeAdjustments(short imsak, short fajr, short dhuhr, short asr, short maghrib, short isha)
+    //    public PrayerTimeAdjustments(short imsak, short fajr, short Dhuhr, short Asr, short Maghrib, short Isha)
     //    {
     //        this.Imsak = imsak;
     //        this.Fajr = fajr;
-    //        this.Dhuhr = dhuhr;
-    //        this.Asr = asr;
-    //        this.Maghrib = maghrib;
-    //        this.Isha = isha;
+    //        this.Dhuhr = Dhuhr;
+    //        this.Asr = Asr;
+    //        this.Maghrib = Maghrib;
+    //        this.Isha = Isha;
     //    }
     //}
 
@@ -1879,15 +1879,15 @@ namespace SalahTimes.Experiments
     //}
     //public class Coordinates
     //{
-    //    public double Latitude { get; private set; }
-    //    public double Longtitud { get; private set; }
+    //    public double Lat { get; private set; }
+    //    public double Lon { get; private set; }
 
     //    public double Elevation { get; private set; }
 
     //    public Coordinates(double lat, double lon)
     //    {
-    //        Latitude = lat;
-    //        Longtitud = lon;
+    //        Lat = lat;
+    //        Lon = lon;
     //        Elevation = 0;
     //    }
     //    public Coordinates(double lat, double lon, int elevation) : this(lat, lon)
@@ -1980,7 +1980,7 @@ namespace SalahTimes.Experiments
     //}
     //public class DateComponent
     //{
-    //    public int TimeZone { get; private set; }
+    //    public int TimeZoneUtcOffset { get; private set; }
     //    public DateTime CalculationDate { get; private set; }
     //    //JUlianDate
     //    public double JulianDate { get; private set; }
@@ -1988,7 +1988,7 @@ namespace SalahTimes.Experiments
     //    public DateComponent(DateTime calculationDate, int timeZone)
     //    {
     //        this.CalculationDate = calculationDate;
-    //        this.TimeZone = timeZone;
+    //        this.TimeZoneUtcOffset = timeZone;
     //        this.JulianDate = ToJulianDate(calculationDate.Year, calculationDate.Month, calculationDate.Day);
     //    }
     //    private double ToJulianDate(int year, int month, int day)
@@ -2184,29 +2184,29 @@ namespace SalahTimes.Experiments
     //        times = this.DayPortion(times);
     //        var parameters = this.Parameters;
 
-    //        var sunrise = SunTimes.SunAngleTime(SunTimes.RiseSetAngle(Coordinate.Elevation), times.Sunrise, Coordinate.Latitude, CCW);
-    //        var sunset = SunTimes.SunAngleTime(SunTimes.RiseSetAngle(Coordinate.Elevation), times.Sunset, Coordinate.Latitude);
+    //        var sunrise = SunTimes.SunAngleTime(SunTimes.RiseSetAngle(Coordinate.Elevation), times.Sunrise, Coordinate.Lat, CCW);
+    //        var sunset = SunTimes.SunAngleTime(SunTimes.RiseSetAngle(Coordinate.Elevation), times.Sunset, Coordinate.Lat);
 
-    //        var fajr = _useMoonSight ? MoonSightFarj(sunrise) : SunTimes.SunAngleTime(parameters.FajrAngle, times.Fajr, Coordinate.Latitude, CCW);
-    //        var dhuhr = SunTimes.MidDay(times.Dhuhr);
-    //        var asr = SunTimes.AsrTime((int)parameters.AsrMethodCalculation, times.Asr, Coordinate.Latitude);
-    //        var maghrib = SunTimes.SunAngleTime(parameters.MaghribAngle, times.Maghrib, Coordinate.Latitude);
-    //        var isha = _useMoonSight ? MoonSightIsha(sunset) : SunTimes.SunAngleTime(parameters.IshaAngle, times.Isha, Coordinate.Latitude);
+    //        var fajr = _useMoonSight ? MoonSightFarj(sunrise) : SunTimes.SunAngleTime(parameters.FajrAngle, times.Fajr, Coordinate.Lat, CCW);
+    //        var Dhuhr = SunTimes.MidDay(times.Dhuhr);
+    //        var Asr = SunTimes.AsrTime((int)parameters.AsrMethodCalculation, times.Asr, Coordinate.Lat);
+    //        var Maghrib = SunTimes.SunAngleTime(parameters.MaghribAngle, times.Maghrib, Coordinate.Lat);
+    //        var Isha = _useMoonSight ? MoonSightIsha(sunset) : SunTimes.SunAngleTime(parameters.IshaAngle, times.Isha, Coordinate.Lat);
 
-    //        return new PrayerTimes(times.Imsak, fajr, sunrise, dhuhr, asr, sunset, maghrib, isha, 0.0);
+    //        return new PrayerTimes(times.Imsak, fajr, sunrise, Dhuhr, Asr, sunset, Maghrib, Isha, 0.0);
     //    }
 
     //    private PrayerTimes adjustTimes(PrayerTimes times)
     //    {
 
-    //        times.Imsak += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-    //        times.Fajr += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-    //        times.Sunrise += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-    //        times.Dhuhr += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-    //        times.Asr += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-    //        times.Sunset += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-    //        times.Maghrib += DateComponent.TimeZone - Coordinate.Longtitud / 15;
-    //        times.Isha += DateComponent.TimeZone - Coordinate.Longtitud / 15;
+    //        times.Imsak += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+    //        times.Fajr += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+    //        times.Sunrise += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+    //        times.Dhuhr += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+    //        times.Asr += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+    //        times.Sunset += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+    //        times.Maghrib += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
+    //        times.Isha += DateComponent.TimeZoneUtcOffset - Coordinate.Lon / 15;
 
     //        if (Parameters.HighLatituteRule != HighLatitudeRule.None)
     //            times = this.adjustHighLats(times);
@@ -2217,7 +2217,7 @@ namespace SalahTimes.Experiments
     //            times.Maghrib = times.Sunset + parameters.maghribMinutes / 60.0;
     //        if (parameters.ishaMinutes > 0)
     //            times.Isha = times.Maghrib + parameters.ishaAngle / 60.0;
-    //        times.Dhuhr += parameters.dhuhr / 60.0;
+    //        times.Dhuhr += parameters.Dhuhr / 60.0;
     //        return times;
 
 
@@ -2295,14 +2295,14 @@ namespace SalahTimes.Domain
     //        private short Maghrib = 0;
     //        private short Isha = 0;
 
-    //        public PrayerTimeAdjustments(short imsak, short fajr, short dhuhr, short asr, short maghrib, short isha)
+    //        public PrayerTimeAdjustments(short imsak, short fajr, short Dhuhr, short Asr, short Maghrib, short Isha)
     //        {
     //            this.Imsak = imsak;
     //            this.Fajr = fajr;
-    //            this.Dhuhr = dhuhr;
-    //            this.Asr = asr;
-    //            this.Maghrib = maghrib;
-    //            this.Isha = isha;
+    //            this.Dhuhr = Dhuhr;
+    //            this.Asr = Asr;
+    //            this.Maghrib = Maghrib;
+    //            this.Isha = Isha;
     //        }
     //    }
 
@@ -2367,22 +2367,22 @@ namespace SalahTimes.Domain
 
     //    public class Coordinates
     //    {
-    //        public double Latitude { get; private set; }
-    //        public double Longtitud { get; private set; }
+    //        public double Lat { get; private set; }
+    //        public double Lon { get; private set; }
 
     //        public double Elevation { get; private set; }
 
     //        public Coordinates(double lat, double lon, int elevation)
     //        {
-    //            Latitude = lat;
-    //            Longtitud = lon;
+    //            Lat = lat;
+    //            Lon = lon;
     //            Elevation = elevation;
     //        }
     //    }
 
     //    public class DateSettings
     //    {
-    //        private int TimeZone { get; set; }
+    //        private int TimeZoneUtcOffset { get; set; }
     //        private DateTime CalculationDate { get; set; }
     //        //JUlianDate
     //        private double JDate { get; set; }
@@ -2390,7 +2390,7 @@ namespace SalahTimes.Domain
     //        public DateSettings(DateTime calculationDate, int timeZone)
     //        {
 
-    //            this.TimeZone = timeZone;
+    //            this.TimeZoneUtcOffset = timeZone;
     //        }
 
     //    }
@@ -2649,25 +2649,25 @@ namespace SalahTimes.Domain
         public PrayerTimeAdjustments PrayerTimeAdjustments { get; private set; }
         public static CalculationMethods SelectedCalculationMethod { get; private set; }
 
-        public CalculationParameters(double fajrAngle, double ishaAngle)
+        private CalculationParameters(double fajrAngle, double ishaAngle)
         {
             this.FajrAngle = fajrAngle;
             this.IshaAngle = ishaAngle;
             this.PrayerTimeAdjustments = new PrayerTimeAdjustments();
         }
-        public CalculationParameters(double fajrAngle, int ishaIntervalAfterMaghrib)
+        private CalculationParameters(double fajrAngle, int ishaIntervalAfterMaghrib)
         {
             this.FajrAngle = fajrAngle;
             this.IshaIntervalAfterMaghrib = ishaIntervalAfterMaghrib;
             this.PrayerTimeAdjustments = new PrayerTimeAdjustments();
         }
 
-        public CalculationParameters(double fajrAngle, double maghribAngle, double ishaAngle) : this(fajrAngle, ishaAngle)
+        private CalculationParameters(double fajrAngle, double maghribAngle, double ishaAngle) : this(fajrAngle, ishaAngle)
         {
             this.MaghribAngle = maghribAngle;
         }
 
-        public CalculationParameters(double fajrAngle, double ishaAngle, PrayerTimeAdjustments timeAdjustments)
+        private CalculationParameters(double fajrAngle, double ishaAngle, PrayerTimeAdjustments timeAdjustments)
             : this(fajrAngle, ishaAngle)
         {
             this.PrayerTimeAdjustments = timeAdjustments;
@@ -2677,6 +2677,8 @@ namespace SalahTimes.Domain
         {
             this.PrayerTimeAdjustments = timeAdjustments;
         }
+
+       
 
         public void SetMidnightMethod(MidnightMethod method)
         {
@@ -3183,11 +3185,11 @@ namespace SalahTimes.Domain
 
     public class MoonsightCalculationMethod
     {
-        //private double Latitude { get; }
+        //private double Lat { get; }
         //private DateTime CalculationDate { get; }
         //public MoonsightCalculationMethod(double latitute, DateTime calculationDate)
         //{
-        //    Latitude = latitute;
+        //    Lat = latitute;
         //    CalculationDate = calculationDate;
         //}
 

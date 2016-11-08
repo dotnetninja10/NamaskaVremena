@@ -8,20 +8,28 @@ namespace PrayerTimes.Types
 {
     public class DateComponent
     {
-        public int TimeZone { get; private set; }
+        public int TimeZoneUtcOffset { get; private set; }
         public DateTime CalculationDate { get; private set; }
         public TimeFormats TimeFormat { get; private set; }
         //JUlianDate
         //public double JulianDate { get; private set; }
 
-        public DateComponent(DateTime calculationDate, int timeZone)
+        public DateComponent(DateTime calculationDate, int timeZoneUtcOffset)
         {
             this.CalculationDate = calculationDate;
-            this.TimeZone = timeZone;
+            this.TimeZoneUtcOffset = timeZoneUtcOffset;
             this.TimeFormat = TimeFormats.Hour24;
             //this.JulianDate = ToJulianDate(calculationDate.Year, calculationDate.Month, calculationDate.Day);
         }
-        public DateComponent(DateTime calculationDate, int timeZone, TimeFormats timeFormat) : this(calculationDate, timeZone)
+        public DateComponent(DateTime calculationDate, string timeZone)
+        {
+            this.CalculationDate = calculationDate;
+            var timeZoneId = TimeZoneInfo.FindSystemTimeZoneById(timeZone);
+            this.TimeZoneUtcOffset = timeZoneId.GetUtcOffset(calculationDate.AddDays(1)).Hours; ;
+            this.TimeFormat = TimeFormats.Hour24;
+            //this.JulianDate = ToJulianDate(calculationDate.Year, calculationDate.Month, calculationDate.Day);
+        }
+        public DateComponent(DateTime calculationDate, int timeZoneUtcOffset, TimeFormats timeFormat) : this(calculationDate, timeZoneUtcOffset)
         {
             this.TimeFormat = timeFormat;
         }

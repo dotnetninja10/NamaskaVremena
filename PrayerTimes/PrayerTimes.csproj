@@ -35,9 +35,10 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Types\PrayerHours.cs" />
     <Compile Include="Utilities\AstronomicalCalculations.cs" />
     <Compile Include="Utilities\MoonsightCalculationMethod.cs" />
-    <Compile Include="PrayerTimes.cs" />
+    <Compile Include="PrayerTimesCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\AsrMethodMadhab.cs" />
     <Compile Include="Types\CalculationMethods.cs" />

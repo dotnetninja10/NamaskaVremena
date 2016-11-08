@@ -22,17 +22,27 @@ namespace SalahTimes.Models
 
     public class SalahTimesOptions
     {
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        public double Lat { get; set; }
+        public double Lon { get; set; }
+        public int Alt { get; set; }
         public int CalculationMethod { get; set; }
         public int HighLatituteMethod { get; set; }
         public int AsrMethod { get; set; }
-        public int Altitude { get; set; }
-        public int ImsakMinutesBeforeFajr { get; set; }
-        public int DhurMinutesAfterMidDay { get; set; }
-        public int MaghribMinutesAfterSunset { get; set; }
-        public int IshaMinutesAfterMaghrib { get; set; }
-       
+        public int MidnightMethod { get; set; }
+        public short Imsak { get; set; }
+        public short Fajr { get; set; }
+        public short Dhuhr { get; set; }
+        public short Asr { get; set; }
+        public short Maghrib { get; set; }
+        public short Isha { get; set; }
+        public int Tz { get; set; }
+        public SalahTimesOptions()
+        {
+            CalculationMethod = -1;
+        }
+        
+        
+        
     }
 
     public class SalahTimesOptionsForCustomAngles : SalahTimesOptions
