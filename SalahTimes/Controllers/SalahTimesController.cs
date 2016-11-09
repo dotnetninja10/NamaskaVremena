@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using PrayerTimes;
 using SalahTimes.Models;
@@ -10,7 +14,26 @@ namespace SalahTimes.Controllers
     
     public class SalahTimesController : ApiController
     {
+        [HttpGet]
+        [Route("salahtimes/{year}/{language}/{place}/word")]
+        public IHttpActionResult Generate()
+        {
+            // processing the stream.
+            var stream = new FileStream(@"C:\Users\kurarm\Documents\Visual Studio 2015\Projects\NamaskaVremena\SalahTimes\VasterasVaktija2_2017.docx", FileMode.Open);
+            var result = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StreamContent(stream)
+            };
+            result.Content.Headers.ContentDisposition =
+                new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = "VasterasVaktija2_2017.docx"
+                };
+            result.Content.Headers.ContentType =
+                new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 
+            return ResponseMessage(result);
+        }
         /// <summary>
         /// 
         /// </summary>
