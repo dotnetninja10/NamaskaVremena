@@ -1,7 +1,5 @@
 ﻿using System;
 using PrayerTimes.Types;
-using PrayerTimes.Utilities;
-
 namespace PrayerTimes.Utilities
 {
     public class AstronomicalCalculations
@@ -43,7 +41,7 @@ namespace PrayerTimes.Utilities
         {
             var decl = SunPosition(julianDate + time).Declination;
             var noon = MidDay(time, julianDate);
-            var t = (1 / 15.0) *
+            var t = 1 / 15.0 *
                     MathUtilities.ArcCos((-MathUtilities.Sin(angle) - MathUtilities.Sin(decl) * MathUtilities.Sin(latitude)) / (MathUtilities.Cos(decl) * MathUtilities.Cos(latitude)));
             return noon + (isCcwDirection ? -t : t);
         }

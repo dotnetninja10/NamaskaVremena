@@ -37,6 +37,7 @@ namespace PrayerTimes.Tests
         [TestMethod]
         public void CalculateTimesWithNORTH_AMERICAFor2016_10_15ForLat43_Long43AndTimeAdjustments()
         {
+
             var coordinates = new Coordinates(43, 43, 0);
             var calculationparameters = new CalculationParameters(CalculationMethods.NORTH_AMERICA,
                 AsrMethodMadhab.Shafii, 

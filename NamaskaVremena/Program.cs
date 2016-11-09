@@ -28,6 +28,7 @@ namespace NamaskaVremena
         //If the Fajr/Isha method specifies a fixed time after Maghrib for Isha, or a fixed time before sunrise for Fajr, then the 1/7th night rule is never applied.
         static void Main(string[] args)
         {
+            HijriCalendaretest();
             var test= new PrayTimeNS.PrayTime();
 
             var p = new PrayTime2.PrayTime();
@@ -155,6 +156,41 @@ namespace NamaskaVremena
             m = cc.Month;
             d = cc.Day;
             
+        }
+
+        private static void HijriCalendaretest()
+        {
+            DateTime myDT = new DateTime(2002, 4, 3, new GregorianCalendar());
+
+            // Creates an instance of the HijriCalendar.
+            HijriCalendar myCal = new HijriCalendar();
+
+            // Displays the values of the DateTime.
+            Console.WriteLine("April 3, 2002 of the Gregorian calendar equals the following in the Hijri calendar:");
+            DisplayValues(myCal, myDT);
+
+            // Adds two years and ten months.
+            myDT = myCal.AddYears(myDT, 2);
+            myDT = myCal.AddMonths(myDT, 10);
+
+            // Displays the values of the DateTime.
+            Console.WriteLine("After adding two years and ten months:");
+            DisplayValues(myCal, myDT);
+        }
+
+        private static void DisplayValues(Calendar myCal, DateTime myDT)
+        {
+            string monthName = new DateTime(2010, 8, 1).ToString("MMM", CultureInfo.InvariantCulture);
+            //UmAlQuraCalendar
+            var dt = myCal.ToDateTime(1438, 1, 1,0,0,0,0);
+            string fullMonthName = new DateTime(2015, 1, 1).ToString("MMMM", CultureInfo.CreateSpecificCulture("ar-SA"));
+            Console.WriteLine("   Era:        {0}", myCal.GetEra(myDT));
+            Console.WriteLine("   Year:       {0}", myCal.GetYear(myDT));
+            Console.WriteLine("   Month:      {0}", myCal.GetMonth(myDT));
+            Console.WriteLine("   DayOfYear:  {0}", myCal.GetDayOfYear(myDT));
+            Console.WriteLine("   DayOfMonth: {0}", myCal.GetDayOfMonth(myDT));
+            Console.WriteLine("   DayOfWeek:  {0}", myCal.GetDayOfWeek(myDT));
+            Console.WriteLine();
         }
         public static bool UseDayLightaving(DateTime dateTime)
         {

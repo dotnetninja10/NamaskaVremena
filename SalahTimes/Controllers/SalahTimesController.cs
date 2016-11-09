@@ -10,6 +10,7 @@ namespace SalahTimes.Controllers
     
     public class SalahTimesController : ApiController
     {
+
         /// <summary>
         /// 
         /// </summary>

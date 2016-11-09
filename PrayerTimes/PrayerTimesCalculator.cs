@@ -46,7 +46,7 @@ namespace PrayerTimes
             this.ComputeTimes();
             return new PrayerHours(this._imsak,this._fajr,this._sunrise,this._dhuhr,this._asr,this._sunset,this._maghrib,this._isha,this._midnight,this._dateComponent.TimeFormat);
         }
-        #region private methods
+        #region Private methods
         private void SetCalculationDate(DateComponent dateComponent)
         {
             this._dateComponent = dateComponent;

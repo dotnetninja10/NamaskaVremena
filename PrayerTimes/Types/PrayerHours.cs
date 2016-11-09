@@ -1,6 +1,5 @@
-using PrayerTimes.Types;
-
-namespace PrayerTimes.Utilities
+using PrayerTimes.Utilities;
+namespace PrayerTimes.Types
 {
     public class PrayerHours
     {
