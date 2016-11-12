@@ -63,7 +63,12 @@ namespace PrayerTimes.Utilities
         }
         public double MoonSightIsha(double sunset, double latitude, DateTime calculationDate)
         {
-            var minutes = _moonsightCalculationMethod.CalculateIshaMinimumGeneral(latitude, calculationDate);
+            var minutes = double.NaN;
+            if (latitude > 55.0)
+                minutes = _moonsightCalculationMethod.CalculateIshaMinimumGeneral(latitude, calculationDate);
+            else
+                minutes = _moonsightCalculationMethod.CalculateIshaMinimumAhmer(latitude, calculationDate);
+
             return sunset + (minutes / 60);
         }
 

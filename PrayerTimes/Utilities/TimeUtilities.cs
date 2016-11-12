@@ -50,7 +50,7 @@ namespace PrayerTimes.Utilities
 
         private static string FloatToTime24(this double time)
         {
-            if (time < 0)
+            if (time < 0 || double.IsNaN(time))
                 return InvalidTime;
             time = FixHour(time + 0.5 / 60); // add 0.5 minutes to round
             double hours = Math.Floor(time);
@@ -60,7 +60,7 @@ namespace PrayerTimes.Utilities
 
         private static string FloatToTime12(this double time, bool noSuffix)
         {
-            if (time < 0)
+            if (time < 0 || double.IsNaN(time))
                 return InvalidTime;
             time = FixHour(time + 0.5 / 60); // add 0.5 minutes to round
             double hours = Math.Floor(time);

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using Novacode;
 using PrayerTimes;
 using SalahTimes.Models;
 
@@ -15,32 +18,91 @@ namespace SalahTimes.Controllers
     public class SalahTimesController : ApiController
     {
         [HttpGet]
-        [Route("salahtimes/{year}/{language}/{place}/word")]
-        public IHttpActionResult Generate()
+        [Route("api/word/{language}/{town}/{year}/{method}/{lat}/{lon}/{alt}")]
+        public IHttpActionResult GenerateYearTableInWord(string language, string town,int year,int method,double lat, double lon, int alt)
         {
-            // processing the stream.
-            var stream = new FileStream(@"C:\Users\kurarm\Documents\Visual Studio 2015\Projects\NamaskaVremena\SalahTimes\VasterasVaktija2_2017.docx", FileMode.Open);
-            var result = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StreamContent(stream)
-            };
-            result.Content.Headers.ContentDisposition =
-                new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
-                {
-                    FileName = "VasterasVaktija2_2017.docx"
-                };
-            result.Content.Headers.ContentType =
-                new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            var result = new HttpResponseMessage(HttpStatusCode.OK);
 
-            return ResponseMessage(result);
+            using (var document = DocX.Load(System.Web.HttpContext.Current.Request.MapPath("~\\Template\\WordTemplate.docx")))
+            {
+                var subTitle =
+                    document.Paragraphs.Where(p => p.StyleName == "SubTitleStyle" && !string.IsNullOrEmpty(p.Text));
+                foreach (var sub in subTitle)
+                {
+                    sub.ReplaceText(sub.Text, "IZ Västerås");
+                }
+                var calculator =
+                    new PrayerTimes.PrayerTimesCalculator(
+                        new PrayerTimes.Types.Coordinates(lat, lon, alt),
+                        (PrayerTimes.Types.CalculationMethods)method);
+
+                //var culture = CultureInfo.CreateSpecificCulture("bs");
+                //string monthName = new DateTime(2010, 7, 1).ToString("MMMM", culture).ToUpper();
+
+                FillMonthData(calculator, document.Paragraphs.FirstOrDefault(p => p.StyleName == "StyleJan"),
+                    "JANUAR", document.Tables.FirstOrDefault(t => t.TableCaption == "January"),
+                    new DateTime(year, 1, 1), new DateTime(year, 1, DateTime.DaysInMonth(year, 1)));
+                FillMonthData(calculator, document.Paragraphs.FirstOrDefault(p => p.StyleName == "StyleFeb"),
+                    "FEBRUAR", document.Tables.FirstOrDefault(t => t.TableCaption == "February"),
+                    new DateTime(year, 2, 1), new DateTime(year, 2, DateTime.DaysInMonth(year, 2)));
+                FillMonthData(calculator, document.Paragraphs.FirstOrDefault(p => p.StyleName == "StyleMar"), "MART",
+                    document.Tables.FirstOrDefault(t => t.TableCaption == "March"), new DateTime(year, 3, 1),
+                    new DateTime(year, 3, DateTime.DaysInMonth(year, 3)));
+                FillMonthData(calculator, document.Paragraphs.FirstOrDefault(p => p.StyleName == "StyleApr"),
+                    "APRIL", document.Tables.FirstOrDefault(t => t.TableCaption == "April"),
+                    new DateTime(year, 4, 1), new DateTime(year, 4, DateTime.DaysInMonth(year, 4)));
+                FillMonthData(calculator, document.Paragraphs.FirstOrDefault(p => p.StyleName == "StyleMay"), "MAJ",
+                    document.Tables.FirstOrDefault(t => t.TableCaption == "May"), new DateTime(year, 5, 1),
+                    new DateTime(year, 5, DateTime.DaysInMonth(year, 5)));
+                FillMonthData(calculator, document.Paragraphs.FirstOrDefault(p => p.StyleName == "StyleJun"), "JUNI",
+                    document.Tables.FirstOrDefault(t => t.TableCaption == "Juni"), new DateTime(year, 6, 1),
+                    new DateTime(year, 6, DateTime.DaysInMonth(year, 6)));
+                FillMonthData(calculator, document.Paragraphs.FirstOrDefault(p => p.StyleName == "StyleJul"), "JULI",
+                    document.Tables.FirstOrDefault(t => t.TableCaption == "July"), new DateTime(year, 7, 1),
+                    new DateTime(year, 7, DateTime.DaysInMonth(year, 7)));
+                FillMonthData(calculator, document.Paragraphs.FirstOrDefault(p => p.StyleName == "StyleAug"),
+                    "AUGUST", document.Tables.FirstOrDefault(t => t.TableCaption == "August"),
+                    new DateTime(year, 8, 1), new DateTime(year, 8, DateTime.DaysInMonth(year, 8)));
+                FillMonthData(calculator, document.Paragraphs.FirstOrDefault(p => p.StyleName == "StyleSep"),
+                    "SEPTEMBER", document.Tables.FirstOrDefault(t => t.TableCaption == "September"),
+                    new DateTime(year, 9, 1), new DateTime(year, 9, DateTime.DaysInMonth(year, 9)));
+                FillMonthData(calculator, document.Paragraphs.FirstOrDefault(p => p.StyleName == "StyleOkt"),
+                    "OKTOBAR", document.Tables.FirstOrDefault(t => t.TableCaption == "October"),
+                    new DateTime(year, 10, 1), new DateTime(year, 10, DateTime.DaysInMonth(year, 10)));
+                FillMonthData(calculator, document.Paragraphs.FirstOrDefault(p => p.StyleName == "StyleNov"),
+                    "NOVEMBAR", document.Tables.FirstOrDefault(t => t.TableCaption == "November"),
+                    new DateTime(year, 11, 1), new DateTime(year, 11, DateTime.DaysInMonth(year, 11)));
+                FillMonthData(calculator, document.Paragraphs.FirstOrDefault(p => p.StyleName == "StyleDec"),
+                    "DECEMBAR", document.Tables.FirstOrDefault(t => t.TableCaption == "December"),
+                    new DateTime(year, 12, 1), new DateTime(year, 12, DateTime.DaysInMonth(year, 12)));
+
+                using (var stream = new MemoryStream())
+                {
+                    // processing the stream.
+                    document.SaveAs(stream);
+
+                    result.Content = new ByteArrayContent(stream.GetBuffer());
+                    result.Content.Headers.ContentDisposition =
+                        new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+                        {
+                            FileName = $"PrayerTimes{year}.docx"
+                        };
+                    result.Content.Headers.ContentType =
+                        new MediaTypeHeaderValue(
+                            "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                }
+                return ResponseMessage(result);
+
+            } 
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="method"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("salahtimes/currentday/{method}")]
+        [Route("api/currentday/{method}")]
         public IHttpActionResult GetCurrentDayTimes(int method)
         {
             var todaysDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
@@ -49,7 +111,7 @@ namespace SalahTimes.Controllers
             var calculator =
                 new PrayerTimes.PrayerTimesCalculator(
                     new PrayerTimes.Types.Coordinates(59.598531, 16.512003, 20),
-                    PrayerTimes.Types.CalculationMethods.MOON_SIGHTING_COMMITTEE);
+                    (PrayerTimes.Types.CalculationMethods)method);
 
             var times = calculator.GetPrayerTimesForDate(new PrayerTimes.Types.DateComponent(todaysDate, "W. Europe Standard Time"));
             return Ok(new Models.SalahTimes
@@ -72,7 +134,7 @@ namespace SalahTimes.Controllers
         /// <param name="method"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("salahtimes/currentweek/{method}")]
+        [Route("api/currentweek/{method}")]
         public IHttpActionResult GetCurrentWeekTimes(int method)
         {
             return
@@ -92,7 +154,7 @@ namespace SalahTimes.Controllers
         /// <param name="method"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("salahtimes/currentmonth/{method}")]
+        [Route("api/currentmonth/{method}")]
         public IHttpActionResult GetCurrentMonthTimes(int method)
         {
             return
@@ -113,7 +175,7 @@ namespace SalahTimes.Controllers
         /// <param name="method"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("salahtimes/currentyear/{method}")]
+        [Route("api/currentyear/{method}")]
         public IHttpActionResult GetCurrentYearTimes(int method)
         {
             return
@@ -138,7 +200,7 @@ namespace SalahTimes.Controllers
         /// <param name="alt"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("salahtimes/{year}/{method}/{lat}/{lon}/{alt}")]
+        [Route("api/{year}/{method}/{lat}/{lon}/{alt}")]
         public IHttpActionResult GetPrayerTimesForSpecificDate(int year, int method, double lat, double lon, int alt)
         {
             if (method < 0 && method > 12)
@@ -162,7 +224,7 @@ namespace SalahTimes.Controllers
         /// <param name="alt"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("salahtimes/{year}/{month}/{method}/{lat}/{lon}/{alt}")]
+        [Route("api/{year}/{month}/{method}/{lat}/{lon}/{alt}")]
         public IHttpActionResult GetPrayerTimesForSpecificDate(int year, int month,int method, double lat, double lon, int alt)
         {
             if (method < 0 && method > 12)
@@ -189,7 +251,7 @@ namespace SalahTimes.Controllers
         /// <param name="alt"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("salahtimes/{year}/{month}/{day}/{method}/{lat}/{lon}/{alt}")]
+        [Route("api/{year}/{month}/{day}/{method}/{lat}/{lon}/{alt}")]
         public IHttpActionResult GetPrayerTimesForSpecificDate(int year, int month,int day, int method, double lat, double lon, int alt)
         {
             if (month > 12 || month < 1)
@@ -232,7 +294,7 @@ namespace SalahTimes.Controllers
         /// <param name="options">Mimimum calculationmethod, latitude and logitude</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("salahtimes/{year}/")]
+        [Route("api/{year}/")]
         public IHttpActionResult GetPrayerTimesForSpecificDate(int year,[FromUri] SalahTimesOptions options)
         {
             var error = CheckForErrors(options);
@@ -253,7 +315,7 @@ namespace SalahTimes.Controllers
         /// <param name="options">>Mimimum calculationmethod, latitude and logitude</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("salahtimes/{year}/{month}/")]
+        [Route("api/{year}/{month}/")]
         public IHttpActionResult GetPrayerTimesForSpecificDate(int year, int month, [FromUri] SalahTimesOptions options)
         {
             if (month > 12 || month < 1)
@@ -277,7 +339,7 @@ namespace SalahTimes.Controllers
         /// <param name="options"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("salahtimes/{year}/{month}/{day}/")]
+        [Route("api/{year}/{month}/{day}/")]
         public IHttpActionResult GetPrayerTimesForSpecificDate(int year, int month, int day,[FromUri] SalahTimesOptions options)
         {
             if (month > 12 || month < 1)
@@ -513,7 +575,49 @@ namespace SalahTimes.Controllers
 
         }
 
+        private static void FillMonthData(IPrayerTimesCalculator calculator, Paragraph paragraph, string monthName, Table table, DateTime startDateTime, DateTime endDatetime)
+        {
+            paragraph.ReplaceText(paragraph.Text, $"{monthName} {startDateTime.Year}");
 
+            for (var date = startDateTime;
+                   date <= endDatetime;
+                   date = date.AddDays(1))
+            {
+                var row = SetUpTableRow(table);
+
+                var times = calculator.GetPrayerTimesForDate(new PrayerTimes.Types.DateComponent(date, "W. Europe Standard Time"));
+
+                row.Cells[0].Paragraphs.First().Append(date.Day.ToString());
+                row.Cells[4].Paragraphs.First().Append(times.Fajr);
+                row.Cells[5].Paragraphs.First().Append(times.Sunrise);
+                row.Cells[6].Paragraphs.First().Append(times.Dhuhr);
+                row.Cells[7].Paragraphs.First().Append(times.Asr);
+                row.Cells[8].Paragraphs.First().Append(times.Maghrib);
+                row.Cells[9].Paragraphs.First().Append(times.Isha);
+            }
+
+        }
+
+        private static Row SetUpTableRow(Table table)
+        {
+            var row = table.InsertRow();
+            row.Cells[0].Width = 0.8;
+            row.Cells[1].Width = 0.8;
+            row.Cells[2].Width = 0.8;
+            row.Cells[3].Width = 8.8;
+            row.Cells[4].Width = 1.31;
+            row.Cells[5].Width = 1.31;
+            row.Cells[6].Width = 1.31;
+            row.Cells[7].Width = 1.31;
+            row.Cells[8].Width = 1.31;
+            row.Cells[9].Width = 1.31;
+            row.Cells[0].Paragraphs.First().Alignment = Alignment.center;
+            row.Cells[4].Paragraphs.First().Alignment = Alignment.center;
+            row.Cells[5].Paragraphs.First().Alignment = Alignment.center;
+            row.Cells[6].Paragraphs.First().Alignment = Alignment.center;
+            row.Cells[7].Paragraphs.First().Alignment = Alignment.center;
+            return row;
+        }
 
         //private DateTime GetLocalDateTime(double latitude, double longitude, DateTime utcDate)
         //{

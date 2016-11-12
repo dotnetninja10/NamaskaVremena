@@ -32,8 +32,11 @@ namespace NamaskaVremena
             var test= new PrayTimeNS.PrayTime();
 
             var p = new PrayTime2.PrayTime();
-            double latitude = 59.598546;//Västerås
-            double longitude = 16.511995;
+            //double latitude = 59.598546;//Västerås
+            //double longitude = 16.511995;
+
+            double latitude = 69.38273058930899;
+            double longitude = 62.316513374999886;
             //double latitude = 59.61;
 
             //double longitude = 16.545;
@@ -89,16 +92,16 @@ namespace NamaskaVremena
                      PrayerTimes.Types.CalculationMethods.MOON_SIGHTING_COMMITTEE);
 
             using (
-                StreamWriter writer =
-                    new StreamWriter(String.Format(@"C:\Users\kurarm\Documents\IdM\pray{0}.txt", latitude)))
+                var writer =
+                    new StreamWriter($@"C:\Users\kurarm\Documents\IdM\pray{latitude}.txt"))
             {
                 Console.SetOut(writer);
                 Console.WriteLine("Latitude={0}", latitude);
                 Console.WriteLine("Longitude={0}", longitude);
                 Console.WriteLine(
                     "farj sunrise Dhuhr Asr(H) Maghrib Isha");
-                for (DateTime date = new DateTime(2017, 1, 1);
-                    date <= new DateTime(2017, 12, 31);
+                for (DateTime date = new DateTime(2016, 1, 1);
+                    date <= new DateTime(2016, 12, 31);
                     date = date.AddDays(1))
                 {
                     //var timzoneFixed1 = TimeZone.CurrentTimeZone.GetUtcOffset(date.AddDays(1)).Hours;

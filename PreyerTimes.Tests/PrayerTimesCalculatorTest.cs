@@ -18,7 +18,7 @@ namespace PrayerTimes.Tests
         public void CalculateTimesWithNORTH_AMERICAFor2016_10_15ForLat43_Long43()
         {
             var zones = TimeZoneInfo.GetSystemTimeZones();
-            var calculationDate = new DateTime(2017, 13, 1);
+            var calculationDate = new DateTime(2016, 10, 15);
             var calculator =
                new PrayerTimesCalculator(
                    new Coordinates(43, 43, 0),
@@ -272,6 +272,27 @@ namespace PrayerTimes.Tests
             Assert.AreEqual(times.Midnight, "23:43");
         }
         [TestMethod]
+        public void CalculateTimesWithMoonSightFor2016_12_10Russias()
+        {
+            //var sarajevoTime = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            //var offset = sarajevoTime.GetUtcOffset(new DateTime(2016, 12, 8).AddDays(1)).Hours;
+            //var calculator =
+            //   new PrayerTimesCalculator(
+            //       new Coordinates(68.10866169011511, 21.711044624999886, 0),
+            //       CalculationMethods.MOON_SIGHTING_COMMITTEE);
+            ////var times = calculator.GetPrayerTimesForDate(new DateComponent(new DateTime(2016, 12, 10), 3));
+            //var times = calculator.GetPrayerTimesForDate(new DateComponent(new DateTime(2016, 12, 8), offset));
+            //Assert.AreEqual(times.Imsak, "05:25");
+            //Assert.AreEqual(times.Fajr, "05:35");
+            //Assert.AreEqual(times.Sunrise, "07:15");
+            //Assert.AreEqual(times.Dhuhr, "11:43");
+            //Assert.AreEqual(times.Asr, "13:29");
+            //Assert.AreEqual(times.Sunset, "15:59");
+            //Assert.AreEqual(times.Maghrib, "16:02");
+            //Assert.AreEqual(times.Isha, "17:27");
+            //Assert.AreEqual(times.Midnight, "23:43");
+        }
+        [TestMethod]
         public void CalculateTimesWithMoonSightFor2016_1_10ForVasteras()
         {
             var sarajevoTime = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
@@ -332,6 +353,130 @@ namespace PrayerTimes.Tests
             Assert.AreEqual(times.Maghrib, "16:07");
             Assert.AreEqual(times.Isha, "17:32");
             Assert.AreEqual(times.Midnight, "23:43");
+        }
+        [TestMethod]
+        public void CalculateTimesWithMoonSightFor2016_1_1ForNurnberg()
+        {
+            var sarajevoTime = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            var offset = sarajevoTime.GetUtcOffset(new DateTime(2016, 1, 1).AddDays(1)).Hours;
+            var calculator =
+               new PrayerTimesCalculator(
+                   new Coordinates(49.6, 11.25, 0),
+                   CalculationMethods.MOON_SIGHTING_COMMITTEE);
+            var times = calculator.GetPrayerTimesForDate(new DateComponent(new DateTime(2016, 1, 1), offset));
+            Assert.AreEqual(times.Imsak, "06:22");
+            Assert.AreEqual(times.Fajr, "06:32");
+            Assert.AreEqual(times.Sunrise, "08:12");
+            Assert.AreEqual(times.Dhuhr, "12:23");
+            Assert.AreEqual(times.Asr, "14:08");
+            Assert.AreEqual(times.Sunset, "16:25");
+            Assert.AreEqual(times.Maghrib, "16:28");
+            Assert.AreEqual(times.Isha, "17:40");
+            Assert.AreEqual(times.Midnight, "00:03");
+        }
+        [TestMethod]
+        public void CalculateTimesWithMoonSightFor2016_5_6ForNurnberg()
+        {
+            var sarajevoTime = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            var offset = sarajevoTime.GetUtcOffset(new DateTime(2016, 5, 6).AddDays(1)).Hours;
+            var calculator =
+               new PrayerTimesCalculator(
+                   new Coordinates(49.6, 11.25, 0),
+                   CalculationMethods.MOON_SIGHTING_COMMITTEE);
+            var times = calculator.GetPrayerTimesForDate(new DateComponent(new DateTime(2016, 5, 6), offset));
+            Assert.AreEqual(times.Imsak, "03:49");
+            Assert.AreEqual(times.Fajr, "03:59");
+            Assert.AreEqual(times.Sunrise, "05:44");
+            Assert.AreEqual(times.Dhuhr, "13:17");
+            Assert.AreEqual(times.Asr, "17:16");
+            Assert.AreEqual(times.Sunset, "20:40");
+            Assert.AreEqual(times.Maghrib, "20:43");
+            Assert.AreEqual(times.Isha, "21:47");
+            Assert.AreEqual(times.Midnight, "23:57");
+        }
+        [TestMethod]
+        public void CalculateTimesWithMoonSightFor2016_6_17ForNurnberg()
+        {
+            var sarajevoTime = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            var offset = sarajevoTime.GetUtcOffset(new DateTime(2016, 6, 17).AddDays(1)).Hours;
+            var calculator =
+               new PrayerTimesCalculator(
+                   new Coordinates(49.6, 11.25, 0),
+                   CalculationMethods.MOON_SIGHTING_COMMITTEE);
+            var times = calculator.GetPrayerTimesForDate(new DateComponent(new DateTime(2016, 6, 17), offset));
+            Assert.AreEqual(times.Imsak, "03:00");
+            Assert.AreEqual(times.Fajr, "03:10");
+            Assert.AreEqual(times.Sunrise, "05:07");
+            Assert.AreEqual(times.Dhuhr, "13:21");
+            Assert.AreEqual(times.Asr, "17:35");
+            Assert.AreEqual(times.Sunset, "21:25");
+            Assert.AreEqual(times.Maghrib, "21:28");
+            Assert.AreEqual(times.Isha, "22:43");
+            Assert.AreEqual(times.Midnight, "00:01");
+        }
+        [TestMethod]
+        public void CalculateTimesWithMoonSightFor2016_7_17ForNurnberg()
+        {
+            var sarajevoTime = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            var offset = sarajevoTime.GetUtcOffset(new DateTime(2016, 7, 17).AddDays(1)).Hours;
+            var calculator =
+               new PrayerTimesCalculator(
+                   new Coordinates(49.6, 11.25, 0),
+                   CalculationMethods.MOON_SIGHTING_COMMITTEE);
+            var times = calculator.GetPrayerTimesForDate(new DateComponent(new DateTime(2016, 7, 17), offset));
+            Assert.AreEqual(times.Imsak, "03:26");
+            Assert.AreEqual(times.Fajr, "03:36");
+            Assert.AreEqual(times.Sunrise, "05:27");
+            Assert.AreEqual(times.Dhuhr, "13:26");
+            Assert.AreEqual(times.Asr, "17:35");
+            Assert.AreEqual(times.Sunset, "21:15");
+            Assert.AreEqual(times.Maghrib, "21:18");
+            Assert.AreEqual(times.Isha, "22:27");
+            Assert.AreEqual(times.Midnight, "00:06");
+        }
+        [TestMethod]
+        public void CalculateTimesWithMoonSightFor2016_1_1NorraSwerive()
+        {
+            var sarajevoTime = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            var offset = sarajevoTime.GetUtcOffset(new DateTime(2016, 1, 1).AddDays(1)).Hours;
+            var calculator =
+               new PrayerTimesCalculator(
+                   new Coordinates(66.26, 16.69, 0),
+                   CalculationMethods.MOON_SIGHTING_COMMITTEE);
+            var times = calculator.GetPrayerTimesForDate(new DateComponent(new DateTime(2016, 1, 1), offset));
+            Assert.AreEqual(times.Imsak, "08:31");
+            Assert.AreEqual(times.Fajr, "08:41");
+            Assert.AreEqual(times.Sunrise, "10:29");
+            Assert.AreEqual(times.Dhuhr, "12:02");
+            Assert.AreEqual(times.Asr, "12:03");
+            Assert.AreEqual(times.Sunset, "13:25");
+            Assert.AreEqual(times.Maghrib, "13:28");
+            Assert.AreEqual(times.Isha, "15:08");
+            Assert.AreEqual(times.Midnight, "00:04");
+            
+        }
+        [TestMethod]
+        public void CalculateTimesWithMoonSightFor2016_6_9NorraSwerive()
+        {
+            var sarajevoTime = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            var offset = sarajevoTime.GetUtcOffset(new DateTime(2016, 6,9).AddDays(1)).Hours;
+            var calculator =
+               new PrayerTimesCalculator(
+                   new Coordinates(66.26, 16.69, 0),
+                   CalculationMethods.MOON_SIGHTING_COMMITTEE);
+            var times = calculator.GetPrayerTimesForDate(new DateComponent(new DateTime(2016, 6, 9), offset));
+            Assert.AreEqual(times.Imsak, "-----");
+            Assert.AreEqual(times.Fajr, "-----");
+            Assert.AreEqual(times.Sunrise, "-----");
+            Assert.AreEqual(times.Dhuhr, "12:58");
+            Assert.AreEqual(times.Asr, "17:50");
+            Assert.AreEqual(times.Sunset, "-----");
+            Assert.AreEqual(times.Maghrib, "-----");
+            Assert.AreEqual(times.Isha, "-----");
+            Assert.AreEqual(times.Midnight, "-----");
+            
+ 
+
         }
     }
 }

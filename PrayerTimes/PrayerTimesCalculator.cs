@@ -25,16 +25,25 @@ namespace PrayerTimes
         #endregion
 
         #region Constructors
+
         public PrayerTimesCalculator(Coordinates coordinates, CalculationMethods calculationMethod)
         {
             this._coordinates = coordinates;
             this._calculationParameters = new CalculationParameters(calculationMethod);
-            this._astronomicalCalculation = new AstronomicalCalculations(_calculationParameters.SelectedCalculationMethod);
+            if (this._coordinates.Latitude > 55.0)
+                this._calculationParameters.SetHighLatituteRule(HighLatitudeRule.OneSeventh);
+
+            this._astronomicalCalculation =
+                new AstronomicalCalculations(_calculationParameters.SelectedCalculationMethod);
         }
+
         public PrayerTimesCalculator(Coordinates coordinates, CalculationParameters calculationParameters)
         {
             this._coordinates = coordinates;
             this._calculationParameters = calculationParameters;
+            if (this._coordinates.Latitude > 55.0)
+                this._calculationParameters.SetHighLatituteRule(HighLatitudeRule.OneSeventh);
+
             this._astronomicalCalculation = new AstronomicalCalculations(CalculationMethods.OTHER);
         }
         #endregion
@@ -68,15 +77,26 @@ namespace PrayerTimes
         {
             this.SetTimesDayPortion();
 
-            _sunrise = _astronomicalCalculation.SunAngleTime(_astronomicalCalculation.RiseSetAngle(_coordinates.Elevation), this._sunrise, _jDate, _coordinates.Latitude, isCcwDirection: true);
-            _sunset = _astronomicalCalculation.SunAngleTime(_astronomicalCalculation.RiseSetAngle(_coordinates.Elevation), this._sunset, _jDate, _coordinates.Latitude);
-            _fajr = _calculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? _astronomicalCalculation.MoonSightFarj(_sunrise, _coordinates.Latitude, _dateComponent.CalculationDate) : _astronomicalCalculation.SunAngleTime(_calculationParameters.FajrAngle, _fajr, _jDate, _coordinates.Latitude, isCcwDirection: true);
+            //var safeLatitude = double.IsNaN(_coordinates.SafeLatitude)
+            //    ? _coordinates.Latitude
+            //    : _coordinates.SafeLatitude;
+
+             var safeLatitude = _coordinates.Latitude;
+
+            _sunrise = _astronomicalCalculation.SunAngleTime(_astronomicalCalculation.RiseSetAngle(_coordinates.Elevation), this._sunrise, _jDate, safeLatitude, isCcwDirection: true);
+            _sunset = _astronomicalCalculation.SunAngleTime(_astronomicalCalculation.RiseSetAngle(_coordinates.Elevation), this._sunset, _jDate, safeLatitude);
+
+            _fajr = _calculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? _astronomicalCalculation.MoonSightFarj(_sunrise, safeLatitude, _dateComponent.CalculationDate) 
+                : _astronomicalCalculation.SunAngleTime(_calculationParameters.FajrAngle, _fajr, _jDate, safeLatitude, isCcwDirection: true);
             _dhuhr = _astronomicalCalculation.MidDay(this._dhuhr, _jDate);
+
             //adding 1 to asrmethod for shadow lenght where 1 is one lenght and 2 is double shadow lenght for Hanafi
-            _asr = _astronomicalCalculation.AsrTime((int)(_calculationParameters.AsrMethodCalculation) + 1, this._asr, _jDate, _coordinates.Latitude);
-            _maghrib = _astronomicalCalculation.SunAngleTime(_calculationParameters.MaghribAngle, this._maghrib, _jDate, _coordinates.Latitude);
-            _isha = _calculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? _astronomicalCalculation.MoonSightIsha(_sunset, _coordinates.Latitude, _dateComponent.CalculationDate) : _astronomicalCalculation.SunAngleTime(_calculationParameters.IshaAngle, _isha, _jDate, _coordinates.Latitude);
+            _asr = _astronomicalCalculation.AsrTime((int)(_calculationParameters.AsrMethodCalculation) + 1, this._asr, _jDate, safeLatitude);
+            _maghrib = _astronomicalCalculation.SunAngleTime(_calculationParameters.MaghribAngle, this._maghrib, _jDate, safeLatitude);
+            _isha = _calculationParameters.SelectedCalculationMethod == CalculationMethods.MOON_SIGHTING_COMMITTEE ? _astronomicalCalculation.MoonSightIsha(_sunset, safeLatitude, _dateComponent.CalculationDate) 
+                : _astronomicalCalculation.SunAngleTime(_calculationParameters.IshaAngle, _isha, _jDate, safeLatitude);
             _midnight = (_calculationParameters.MidnightMethod == MidnightMethod.Jafari) ? _sunset + TimeUtilities.TimeDiff(_sunset, _fajr) / 2 : _sunset + TimeUtilities.TimeDiff(_sunset, _sunrise) / 2;
+            
             //We set default time for Imsak equal to Fajr
             _imsak = _fajr;
 
