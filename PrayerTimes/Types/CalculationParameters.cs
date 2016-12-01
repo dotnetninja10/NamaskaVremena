@@ -82,7 +82,7 @@ namespace PrayerTimes.Types
                 {
                     this.FajrAngle = 15.0;
                     this.IshaAngle = 15.0;
-                    this.PrayerTimeAdjustments = new PrayerTimeAdjustments(-10, 0, 5, 0, 3, 0);
+                    this.PrayerTimeAdjustments = new PrayerTimeAdjustments(-10, 0, 5, 0, 3, 5);
                     break;
                 }
                 case CalculationMethods.NORTH_AMERICA:

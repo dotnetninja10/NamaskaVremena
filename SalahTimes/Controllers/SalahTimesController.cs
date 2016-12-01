@@ -138,15 +138,10 @@ namespace SalahTimes.Controllers
         public IHttpActionResult GetCurrentWeekTimes(int method)
         {
             return
-                GetSalahTimesCollection(
-                    new SalahTimesOptions
-                    {
-                        Lat = 59.598531,
-                        Lon = 16.512003,
-                        Alt = 20,
-                        CalculationMethod = method
-                    },
-                    DateTime.Now.FirstDayOfWeek(), DateTime.Now.LastDayOfWeek());
+                GetSalahTimesCollection2(new PrayerTimes.Types.Coordinates(59.598531,16.512003,20),
+                    method,
+                    DateTime.Now.FirstDayOfWeek(), 
+                    DateTime.Now.LastDayOfWeek());
         }
         /// <summary>
         /// 
@@ -158,14 +153,9 @@ namespace SalahTimes.Controllers
         public IHttpActionResult GetCurrentMonthTimes(int method)
         {
             return
-                GetSalahTimesCollection(
-                    new SalahTimesOptions
-                    {
-                        Lat = 59.598531,
-                        Lon = 16.512003,
-                        Alt = 20,
-                        CalculationMethod = method
-                    },
+                GetSalahTimesCollection2(
+                    new PrayerTimes.Types.Coordinates(59.598531, 16.512003, 20),
+                    method,
                     DateTime.Now.FirstDayOfMonth(), DateTime.Now.LastDayOfMonth());
 
         }
@@ -179,14 +169,9 @@ namespace SalahTimes.Controllers
         public IHttpActionResult GetCurrentYearTimes(int method)
         {
             return
-                GetSalahTimesCollection(
-                    new SalahTimesOptions
-                    {
-                        Lat = 59.598531,
-                        Lon = 16.512003,
-                        Alt = 20,
-                        CalculationMethod = method
-                    },
+                GetSalahTimesCollection2(
+                    new PrayerTimes.Types.Coordinates(59.598531, 16.512003, 20),
+                    method,
                     new DateTime(DateTime.Now.Year,1,1), new DateTime(DateTime.Now.Year, 12, 31));
 
         }
@@ -469,6 +454,19 @@ namespace SalahTimes.Controllers
 
             var calculator = new PrayerTimes.PrayerTimesCalculator(coordinates, calculationparameters);
             
+            return Ok(this.GetPrayerTimes(startCalculationDate, endCalculationDate, calculator));
+        }
+        private IHttpActionResult GetSalahTimesCollection2(PrayerTimes.Types.Coordinates coordinates, int method, DateTime startCalculationDate,
+            DateTime endCalculationDate)
+        {
+            if (method < 0 && method > 12)
+                return (IHttpActionResult)this.BadRequest("Wrong calculation method");
+
+            var calculator =
+            new PrayerTimes.PrayerTimesCalculator(
+                coordinates,
+                (PrayerTimes.Types.CalculationMethods)method);
+
             return Ok(this.GetPrayerTimes(startCalculationDate, endCalculationDate, calculator));
         }
         private IHttpActionResult GetSalahTimesCollectionWithAngles(double fajrAngle,double ishaAngle, SalahTimesOptionsForCustomAngles options, DateTime startCalculationDate,
