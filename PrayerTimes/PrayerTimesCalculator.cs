@@ -31,7 +31,7 @@ namespace PrayerTimes
             this._coordinates = coordinates;
             this._calculationParameters = new CalculationParameters(calculationMethod);
             if (this._coordinates.Latitude > 55.0)
-                this._calculationParameters.SetHighLatituteRule(HighLatitudeRule.OneSeventh);
+                this._calculationParameters.SetHighLatituteRule(HighLatitudeRule.AngleBased);
 
             this._astronomicalCalculation =
                 new AstronomicalCalculations(_calculationParameters.SelectedCalculationMethod);
@@ -42,7 +42,7 @@ namespace PrayerTimes
             this._coordinates = coordinates;
             this._calculationParameters = calculationParameters;
             if (this._coordinates.Latitude > 55.0)
-                this._calculationParameters.SetHighLatituteRule(HighLatitudeRule.OneSeventh);
+                this._calculationParameters.SetHighLatituteRule(HighLatitudeRule.AngleBased);
 
             this._astronomicalCalculation = new AstronomicalCalculations(CalculationMethods.OTHER);
         }

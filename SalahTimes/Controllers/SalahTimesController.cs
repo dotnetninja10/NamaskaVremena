@@ -469,11 +469,50 @@ namespace SalahTimes.Controllers
 
             return Ok(this.GetPrayerTimes(startCalculationDate, endCalculationDate, calculator));
         }
-        private IHttpActionResult GetSalahTimesCollectionWithAngles(double fajrAngle,double ishaAngle, SalahTimesOptionsForCustomAngles options, DateTime startCalculationDate,
+
+        [HttpGet]
+        [Route("api/custom/{year}/")]
+        public IHttpActionResult GetPrayerTimesForSpecificDateCustomAngles(int year, [FromUri] SalahTimesOptionsForCustomAngles options)
+        {
+            var error = CheckForErrors(options);
+
+            if (!string.IsNullOrWhiteSpace(error))
+                return BadRequest(error);
+
+            var startCalculationDate = new DateTime(year, 1, 1);
+            var endCalculationDate = new DateTime(year, 12, 31);
+
+            return GetSalahTimesCollectionWithAngles(options, startCalculationDate, endCalculationDate);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <param name="options">>Mimimum calculationmethod, latitude and logitude</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/custom/{year}/{month}/")]
+        public IHttpActionResult GetPrayerTimesForSpecificDateCustomAngles(int year, int month, [FromUri] SalahTimesOptionsForCustomAngles options)
+        {
+            if (month > 12 || month < 1)
+                return BadRequest("Incorrect month value");
+            var error = CheckForErrors(options);
+
+            if (!string.IsNullOrWhiteSpace(error))
+                return BadRequest(error);
+
+            var startCalculationDate = new DateTime(year, month, 1);
+            var endCalculationDate = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+
+            return GetSalahTimesCollectionWithAngles(options, startCalculationDate, endCalculationDate);
+        }
+        private IHttpActionResult GetSalahTimesCollectionWithAngles(SalahTimesOptionsForCustomAngles options, DateTime startCalculationDate,
             DateTime endCalculationDate)
         {
             var coordinates = new PrayerTimes.Types.Coordinates(options.Lat, options.Lon, options.Alt);
-            var calculationparametersCustomAngles = new PrayerTimes.Types.CalculationParameters(PrayerTimes.Types.CalculationMethods.OTHER,
+            var calculationparametersCustomAngles = new PrayerTimes.Types.CalculationParameters(options.FajrAngle,
+                options.IshaAngle,
                 (PrayerTimes.Types.AsrMethodMadhab)options.AsrMethod,
                 (PrayerTimes.Types.HighLatitudeRule)options.HighLatituteMethod,
                 (PrayerTimes.Types.MidnightMethod)options.MidnightMethod,

@@ -37,6 +37,7 @@ namespace PrayerTimes.Types
             this.HighLatituteRule = highLatituteRule;
             this.MidnightMethod = midnightMethod;
             this.PrayerTimeAdjustments = prayerTimeAdjustments;
+            this.SelectedCalculationMethod = CalculationMethods.OTHER;
         }
 
         public CalculationParameters(CalculationMethods calculationMethod)
